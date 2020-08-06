@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        html{
+            height: 100%;
+            width: 100%;
+        }
+        body{
+            height: 100%;
+            width: 100%;
+            perspective:700;
+            -webkit-perspective: 700;
+        }
+        canvas{
+            position: absolute;
+            top:calc(50% - 200px);
+            left:calc(50% - 150px);
+            background: url(test.jpg) no-repeat center center;
+            background-size: 100% 100%;
+            background-color: transparent;
+            border-radius:10px;
+            box-shadow: 0px 0px 3px orange;
+            /* box-shadow:0px 20px 100px #555; */
+            transform-style: preserve-3d;
+            transition: all 0.3s;
+            transform: rotateX(60deg);
+        }
+        canvas:hover, canvas.hover{
+            box-shadow: 0px 0px 5px black;
+            box-shadow:0px 20px 100px #555;
+            transform:translateZ(100px) rotateX(0deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- <div> -->
+        <canvas></canvas>
+    <!-- </div> -->
+    <script>
+        let timer;
+        const canvasWidth = 240;
+        const canvasHeight = 400;
+        let pathSize = 40;
+        const canvas = document.querySelector('canvas');
+        canvas.width=canvasWidth;
+        canvas.height=canvasHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = "#ccc";
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+        ctx.globalCompositeOperation="destination-out"
+        ctx.font = '40px Arial';
+        ctx.fillStyle = "orange";
+        ctx.fillText("谁家美女",44,220);
+        function move(ps){
+            const {
+                offsetX,
+                offsetY
+            } = ps;
+            console.log(offsetX,offsetY);
+            ctx.beginPath();
+            ctx.fillStyle = "white";
+            ctx.arc(offsetX,offsetY,pathSize/2,0,2*Math.PI);
+            ctx.closePath();
+            ctx.fill();
+        }
+        canvas.addEventListener('touchmove',(event)=>{
+            const touch = event.touches[0];
+            const target = event.currentTarget;
+            const {
+                clientX,
+                clientY
+            } = touch;
+            const {
+                offsetTop,
+                offsetLeft,
+            } = target;
+            const obj = {
+                offsetX: clientX - offsetLeft,
+                offsetY: clientY - offsetTop,
+            }
+            canvas.className='hover';
+            move(obj);
+        })
+        canvas.addEventListener('touchend',(event)=>{
+            canvas.className='';
+        })
+        canvas.addEventListener('mousemove',move)
+        //     canvas.style.width = window.innerWidth+'px';
+        //     canvas.style.height = window.innerHeight+'px';
+    </script>
+</body>
+</html>

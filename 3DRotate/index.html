@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: #eee;
+        }
+        .card{
+            height: 400px;
+            background-color: white;
+            position: absolute;
+            top: calc(50% - 200px);
+            left: 18%;
+            right: 18%;
+            text-align: center;
+            transform-style: preserve-3d;
+            font-size: 40px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0px 0px 5px #555;
+            box-shadow: 0px 0px 10px #555;
+            border-radius: 10px;
+        }
+        .title{
+            height: 130px;
+            line-height: 130px;
+            transform: translateZ(200px);
+        }
+        .desc{
+            height: 130px;
+            line-height: 130px;
+            transform: translateZ(50px);
+        }
+        .bottom-text{
+            height: 130px;
+            line-height: 130px;
+            transform: translateZ(120px);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="title">you</div>
+        <div class="desc">I</div>
+        <div class="bottom-text">love</div>
+    </div>
+    <script>
+        window.onload = ()=>{
+            const card = document.getElementsByClassName('card')[0];
+            const title = document.getElementsByClassName('title')[0];
+            const desc = document.getElementsByClassName('desc')[0];
+            const bottom = document.getElementsByClassName('bottom-text')[0];
+            document.addEventListener('mousemove',(event)=>{
+                const {
+                    pageX,
+                    pageY
+                } = event;
+                const halfWidth = window.innerWidth/2;
+                const halfHeight = window.innerHeight/2;
+                const y = parseInt((pageX - halfWidth)/halfWidth * 45);
+                const x = -parseInt((pageY - halfHeight)/halfHeight * 45);
+                card.style.transform = `rotateX(${x}deg) rotateY(${y}deg)`;
+            })
+            setInterval(()=>{
+                an(card);
+                an(title);
+                an(desc);
+                an(bottom);
+            }, 1000);
+            function an(dom){
+                // dom.style.transitionProperty = "background"
+                dom.style.transition = 'background 1s, color 1s';
+                dom.style.backgroundColor = getRandomColor();
+                dom.style.color = getRandomColor();
+            }
+            function getRandomColor() {
+                const red = parseInt(Math.random()*15).toString(16);
+                const green = parseInt(Math.random()*15).toString(16);
+                const blue = parseInt(Math.random()*15).toString(16);
+                return `#${red}${green}${blue}`;
+            }
+        }
+    </script>
+</body>
+</html>

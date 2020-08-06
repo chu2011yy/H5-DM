@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- <div onscroll="ons(event)">
+        <ul></ul>
+    </div> -->
+    <script>
+        let doc;
+        let ulEle;
+        let docFragment;
+        let body;
+        let header;
+        let startTouchPageY;
+        let touchStartScrollTop;
+        let throttle = new Throttle();
+        let moveTransformTime = 60;
+        let isTouchstart = false;
+        init();
+        render();
+        bindEvent();
+        function init() {
+            doc = document;
+            ulEle = doc.createElement('ul');
+            header = doc.getElementsByClassName('header')[0];
+            // ulEle = doc.getElementsByTagName('ul')[0];
+            docFragment = doc.createDocumentFragment();
+            body = doc.body;
+        }
+        function render() {
+            const showList = ['html','css','javascript','vue','react','weapp','angular','node.js','jquery'];
+            for(const liText of showList) {
+                const liEle = doc.createElement('li');
+                liEle.innerText = liText;
+                ulEle.appendChild(liEle);
+            }
+            docFragment.appendChild(ulEle);
+            body.appendChild(docFragment);
+        }
+        function bindEvent() {
+            ulEle.addEventListener('scroll',function(event){
+                // const target = event.target;
+                // console.log('scroll',target.scrollTop);
+                // header.style.opacity = target.scrollTop<=100?0:1 ;
+            });
+            ulEle.addEventListener('mousedown',function(event){
+                isTouchstart = true;
+                startTouchPageY = event.pageY;
+                console.log('mousedown');
+            });
+            ulEle.addEventListener('touchstart',function(event){
+                isTouchstart = true;
+                console.log('touchstart');
+            });
+            ulEle.addEventListener('mousemove',function(event){
+                isTouchstart && move(event);
+                // isTouchstart && move(event);
+                // console.log('mousemove');
+            });
+            ulEle.addEventListener('touchmove',function(event){
+                const touch = event.touches[0];
+                if (isTouchstart) {
+                    startTouchPageY = touch.pageY;
+                    isTouchstart = false;
+                    return;
+                }
+                move(touch);
+                console.log('touchmove');
+            });
+            function move(event) {
+                const {
+                    scrollTop,
+                    scrollHeight,
+                    clientHeight
+                } = ulEle
+                const isToBottom = scrollHeight === Math.ceil(scrollTop + clientHeight);
+                if (scrollTop===0|| isToBottom) {
+                    const curTouchePageY = event.pageY;
+                    console.log('curTouchePageY',curTouchePageY);
+                    // window.requestAnimationFrame(()=>{
+                    throttle.throttle(5,()=>{
+                        // const translateY = Math.sqrt(event.pageY - startTouchPageY)*6.5;
+                        const distance =  isToBottom ? startTouchPageY - curTouchePageY : curTouchePageY - startTouchPageY;
+                        let translateY = Math.pow(distance,1/2)*6;
+                        isToBottom && (translateY = -translateY);
+                        const isTransition = true;
+                        const transition = isTransition&&'transition:transform;'||'';
+                        ulEle.style.cssText = `${transition}${moveTransformTime};transform:translateY(${translateY}px)`;
+                    });
+                }
+            }
+            ulEle.addEventListener('mouseup',function(event){
+                end(event);
+                isTouchstart = false;
+                console.log('mouseup');
+            });
+            ulEle.addEventListener('touchend',function(event){
+                const touch = event.touches[0];
+                end(touch);
+                console.log('touchend');
+            });
+            function end(event){
+                const {
+                    scrollTop,
+                    scrollHeight,
+                    clientHeight
+                } = ulEle;
+                const isToBottom = scrollHeight === Math.ceil(scrollTop + clientHeight);
+                if (scrollTop===0|| isToBottom ) {
+                    console.log('ulEle.scrollTop===0',ulEle.scrollTop);
+                    setTimeout(()=>{
+                        ulEle.style.cssText = 'transition:transform .25s ease-in-out;transform:translateY(0)';
+                    },moveTransformTime)
+                }
+            }
+        }
+        function Throttle() {
+            this.canRun = true;
+            /**
+            * 节流
+            **/
+            this.throttle = function(duration = 100, callback, data = {}) {
+                if(!this.canRun) return;
+                let throttleResolve;
+                const promise = new Promise((resolve)=>{
+                    throttleResolve = resolve;
+                })
+                this.canRun = false;
+                setTimeout(()=>{
+                    callback && typeof callback === 'function' && callback.call(this, data);
+                    throttleResolve();
+                    this.canRun = true;
+                }, duration);
+                return promise;
+            }
+            return this;
+        }
+    </script>
+</body>
+</html>

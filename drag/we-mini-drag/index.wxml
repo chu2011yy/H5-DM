@@ -1,0 +1,7 @@
+<!--components/drag/index.wxml-->
+<view class="drag-box" 
+  style="left:{{movePosition.x}}px;top:{{movePosition.y}}px;{{customStyle}}"
+  bindtouchstart="touchStart"
+  bindtouchmove="touchMove">
+  <slot name="box"/>
+</view>

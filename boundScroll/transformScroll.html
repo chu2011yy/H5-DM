@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        .scroll-box{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        ul{
+            height: auto;
+            /* transition: transform 60ms; */
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let throttle = new Throttle();
+        const body = document.body;
+        const docFragment = document.createDocumentFragment();
+        const scrollBox = document.createElement('div');
+        const ul = document.createElement('ul');
+        scrollBox.className = 'scroll-box';
+        const showList = ['html','css','javascript','vue','react','weapp','angular','node.js','jquery'];
+        for(const item of [...showList,...showList]) {
+            const li = document.createElement('li');
+            li.innerText = item;
+            ul.appendChild(li);
+        }
+        scrollBox.appendChild(ul);
+        docFragment.appendChild(scrollBox);
+        body.appendChild(docFragment);
+        scrollBox.addEventListener('touchstart', touchStart);
+        scrollBox.addEventListener('touchmove', touchmove);
+        scrollBox.addEventListener('touchend', touchend);
+        let acceleratedSpeed = 0; //
+        let translateY_s = 0;
+        let translateY_d = 0;
+        let yStart;
+        let yMove;
+        let tMove;
+        let isStartTouch = false;
+        let moveList = [];
+        function touchStart(event) {
+            const touch = event.touches[0];
+            yStart = touch.screenY;
+            moveList = [];
+        }
+        function touchmove(event) {
+            // throttle.throttle(0,()=>{
+                const touch = event.touches[0];
+                yMove = touch.screenY;
+                const dist = yMove - yStart;
+                isStartTouch = false;
+                translateY_d = translateY_s +  parseInt(dist);
+                ul.style.cssText = `transform:translateY(${translateY_d}px)`;
+                tMove = event.timeStamp;
+                const last = moveList[moveList.length];
+                moveList.push({
+                    time: event.timeStamp,
+                    y: yMove
+                })
+            // })
+        }
+        function touchend(event) {
+            const touch = event.changedTouches[0];
+            const yEnd = touch.screenY;
+            translateY_s = translateY_d;
+            const ulHeight = window.getComputedStyle(ul,null).getPropertyValue("height").replace('px','');
+            const boxHeight = window.getComputedStyle(scrollBox,null).getPropertyValue("height").replace('px','');
+            const scrollHeight = ulHeight - boxHeight;
+            if(translateY_s > 0) {
+                endUp();
+            } else if (translateY_s < -scrollHeight){
+                endBottom(scrollHeight);
+            } else {
+                const lastOne = moveList[moveList.length - 1];
+                const lastTwo = moveList[moveList.length - 2];
+                const lastThree = moveList[moveList.length - 3];
+                const {
+                    time: lastOneTime,
+                    y: lastOneY
+                } = lastOne;
+                const {
+                    time: lastTwoTime,
+                    y: lastTwoY
+                } = lastTwo;
+                const {
+                    time: lastThreeTime,
+                    y: lastThreeY
+                } = lastThree;
+
+                const v0 = Math.abs((lastThreeY - lastTwoY) / (lastThreeTime - lastTwoTime));
+                const v1 = Math.abs((lastTwoY - lastOneY) / (lastTwoTime - lastOneTime));
+                const t = Math.abs(lastTwoTime - lastOneTime);
+                const a = Math.abs(v1 - v0)*t;
+                // console.log('v1',v1);
+                // console.log('v0',v0);
+                // console.log('a',a);
+                let duration = 20;
+                let ty = translateY_s;
+                let interval = setInterval(()=>{
+                    const d = Math.abs(translateY_s) - parseInt(1/2*a*duration*duration);
+                    console.log('translateY_s',translateY_s)
+                    duration++;
+                    ty = ty > 0 ? ty + d: ty - d;
+                    if(d <= 0) {
+                        clearInterval(interval);
+                        interval = null;
+                        translateY_s = ty;
+                        return;
+                    } else if (ty > 0) {
+                        endUp();
+                        clearInterval(interval);
+                        interval = null;
+                        translateY_s = ty;
+                        return;
+                    } else if (ty < - scrollHeight) {
+                        endBottom(scrollHeight);
+                        clearInterval(interval);
+                        interval = null;
+                        translateY_s = ty;
+                        return;
+                    }
+                    ul.style.cssText = `transition: transform 0.02s;transform:translateY(${ty}px)`;
+                },20)
+            }
+        }
+
+        function endUp() {
+            ul.style.cssText = `transition: transform 0.2s ease-in-out;transform:translateY(${0}px)`;
+        }
+        function endBottom(scrollHeight) {
+            translateY_s = -scrollHeight;
+            ul.style.cssText = `transition: transform 0.3s;transform:translateY(${translateY_s}px)`;
+        }
+        function Throttle() {
+            this.canRun = true;
+            /**
+            * 节流
+            **/
+            this.throttle = function(duration = 100, callback, data = {}) {
+                if(!this.canRun) return;
+                let throttleResolve;
+                const promise = new Promise((resolve)=>{
+                    throttleResolve = resolve;
+                })
+                this.canRun = false;
+                setTimeout(()=>{
+                    callback && typeof callback === 'function' && callback.call(this, data);
+                    throttleResolve();
+                    this.canRun = true;
+                }, duration);
+                return promise;
+            }
+            return this;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #test {
+            /* position: absolute;
+            top: 100px;
+            left: 100px; */
+            width: 80px;
+            height: 80px;
+            border-radius: 100%;
+            background-color: red;
+            color: white;
+            line-height: 80px;
+            text-align: center;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test">
+        99+
+    </div>
+    <script>
+        (function (window) {
+            var dom = {
+                //绑定事件
+                on: function (node, eventName, handler) {
+                    if (node.addEventListener) {
+                        node.addEventListener(eventName, handler);
+                    } else {
+                        node.attachEvent("on" + eventName, handler);
+                    }
+                },
+                //获取元素的样式
+                getStyle: function (node, styleName) {
+                    var realStyle = null;
+                    if (window.getComputedStyle) {
+                        realStyle = window.getComputedStyle(node, null)[styleName];
+                    } else if (node.currentStyle) {
+                        realStyle = node.currentStyle[styleName];
+                    }
+                    return realStyle;
+                },
+                //获取设置元素的样式
+                setCss: function (node, css) {
+                    for (var key in css) {
+                        node.style[key] = css[key];
+                    }
+                },
+            };
+            //#region 拖拽元素类
+            function DragElement(node) {
+                this.node = node;
+                this.x = 0;
+                this.y = 0;
+            }
+            DragElement.prototype = {
+                constructor: DragElement,
+                init: function () {
+                    this.setEleCss({
+                        left: dom.getStyle(node, "left"),
+                        top: dom.getStyle(node, "top"),
+                    }).setXY(node.style.left, node.style.top);
+                },
+                setXY: function (x, y) {
+                    this.x = parseInt(x) || 0;
+                    this.y = parseInt(y) || 0;
+                    return this;
+                },
+                setEleCss: function (css) {
+                    dom.setCss(this.node, css);
+                    return this;
+                },
+            };
+            //#endregion
+            //#region 鼠标元素
+
+            function Mouse() {
+                this.x = 0;
+                this.y = 0;
+            }
+
+            Mouse.prototype.setXY = function (x, y) {
+                this.x = parseInt(x);
+                this.y = parseInt(y);
+            };
+
+            //#endregion
+            //拖拽配置
+            var draggableConfig = {
+                zIndex: 1,
+                draggingObj: null,
+                mouse: new Mouse(),
+            };
+
+            function Drag(ele) {
+                this.ele = ele;
+                dom.on(ele, "mousedown", mouseDown);
+                dom.on(ele, "touchstart", mouseDown);
+                dom.on(ele, "mousemove", mousemove);
+                dom.on(ele, "touchmove", mousemove);
+                dom.on(ele, "mouseup", mouseup);
+                dom.on(ele, "touchend", mouseup);
+                ele.onselectstart = function () {
+                    //防止拖拽对象内的文字被选中
+                    return false;
+                };
+            }
+
+            function getPositionInfo(event) {
+                var clientX = event.clientX;
+                if (event.clientX) {
+                    return event;
+                } else {
+                    return event.targetTouches[0];
+                }
+            }
+
+            function mouseDown(event) {
+                var ele = event.target || event.srcElement;
+                var {
+                    clientX,
+                    clientY
+                } = getPositionInfo(event);
+                draggableConfig.mouse.setXY(clientX, clientY);
+                draggableConfig.draggingObj = new DragElement(ele);
+                draggableConfig.draggingObj.setXY(ele.style.left, ele.style.top)
+                    .setEleCss({
+                        zIndex: draggableConfig.zIndex++,
+                        position: "relative",
+                    });
+            }
+
+            function mousemove(event) {
+                if (draggableConfig.draggingObj) {
+                    var {
+                        clientX,
+                        clientY
+                    } = getPositionInfo(event);
+                    var mouse = draggableConfig.mouse,
+                        draggingObj = draggableConfig.draggingObj;
+                    draggingObj.setEleCss({
+                        left: parseInt(clientX - mouse.x + draggingObj.x) + "px",
+                        top: parseInt(clientY - mouse.y + draggingObj.y) + "px",
+                    });
+                }
+            }
+
+            function mouseup(event) {
+                draggableConfig.draggingObj = null;
+            }
+            window.Drag = Drag;
+        })(window);
+        Drag(document.getElementById('test'));
+    </script>
+</body>
+
+</html>

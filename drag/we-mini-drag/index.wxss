@@ -1,0 +1,11 @@
+/* components/drag/index.wxss */
+.drag-box{
+  position: absolute;
+  left:0;
+  top:0;
+  z-index:1;
+  width: 0;
+  height: 0;
+  display: inline-block;
+  transition: left 90ms, top 90ms;
+}
