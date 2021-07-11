@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<title>o2o店铺</title>
+<meta name="pageType" content="11">
+<meta name="merchantId" content="">
+<meta name="brandId" content="">
+<script src="/h5_mall/lang/index.js?0_2"></script>
+<link href="//middleend-dev-statico2o.test.h.cn/cms/front/ncms/common/common.css?0_2" rel="stylesheet">
+<link href="//middleend-dev-statico2o.test.h.cn/cms/front/ncms/libs/frozenui/css/frozen.css?0_2" rel="stylesheet">
+<link rel="stylesheet" href="//middleend-dev-statico2o.test.h.cn/h5_o2o/libs/frozenui/css/frozen.css">
+<link rel="stylesheet" href="//middleend-dev-statico2o.test.h.cn/h5_o2o/variables_single_fe4182.css">
+<link rel="stylesheet" href="//middleend-dev-statico2o.test.h.cn/h5_o2o/common.css">
+<script src="//middleend-dev-statico2o.test.h.cn/h5_o2o/lang/index.js"></script>
+<script src="//res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script type="text/javascript" src="//webapi.amap.com/maps?v=1.3&key=4cbe65ccdb8919a83e3fa235b93b0fa9"></script>
+<style>
+.headSearch-box {
+display: inline-block;
+height: 28px;
+width: 30px;
+vertical-align: middle;
+position: relative;
+}
+.headSearch-box .sprites3-big-headSearch {
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+margin: auto;
+}
+.headSearch-img {
+position: absolute;
+top: 50%;
+left: 50%;
+margin-top: -9px;
+margin-left: -9px;
+}
+.ui-header .location i {
+float: left;
+margin-left: 5px;
+margin-top: 20px;
+}
+.ui-header .location span {
+display: inline-block;
+width: 0.7rem;
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+}
+.ui-header .search {
+left: 70px;
+right: 72px;
+padding-left: 10px;
+line-height: 30px;
+border: none;
+}
+.ui-header .search i {
+float: none;
+display: inline-block;
+margin: 0 5px 0 0;
+vertical-align: sub;
+}
+.search-isNewRetail {
+left: 10px;
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 1;
+-webkit-box-orient: vertical;
+}
+.icon-search-isNewRetail {
+height: 15px;
+width: 10px;
+background-position: -231px -170px;
+background-size: 335px auto;
+}
+.placeholder {
+height: 44px;
+}
+.bottom-tool {
+z-index: 99 !important;
+}
+.backtop {
+display: block;
+}
+.ui-header-stable {
+padding: 0 12px;
+}
+.icon-search-index {
+width: 16px;
+height: 16px;
+background-position: -195px -35px;
+}
+.search {
+left: 20px !important;
+right: 75px !important;
+}
+.item {
+border: none !important;
+}
+.ui-badge-cornernum-1 {
+position: fixed;
+top: 8px;
+right: 3px;
+height: 14px;
+line-height: 14px;
+padding: 0px 4px;
+color: rgb(255, 255, 255);
+font-size: 10px;
+background-color: var(--theme-subsidiary-color);
+border-radius: 11px;
+text-align: center;
+z-index: 106;
+}
+.tanpin-inner {
+position: absolute;
+width: 86%;
+left: 7%;
+top: 20%;
+}
+.tanpin-inner .close {
+position: absolute;
+right: 12px;
+top: -13px;
+width: 26px;
+height: 26px;
+line-height: 26px;
+border-radius: 13px;
+background-color: var(--bg-block);
+font-size: 20px;
+color: var(--text-light);
+text-align: center;
+z-index: 10000;
+-webkit-box-shadow: 0 0 4px rgba(51, 51, 51, .5);
+box-shadow: 0 0 4px rgba(51, 51, 51, .5);
+display: none;
+}
+.tanpin-inner .close.show {
+display: block;
+}
+</style>
+<link rel="stylesheet" href="/h5_mall/libs/frozenui/css/frozen.css?0_2">
+<link rel="stylesheet" href="/h5_mall/variables_single_fe4182.css?0_2">
+<link rel="stylesheet" href="/h5_mall/common.css?0_2">
+<link rel="stylesheet" href="/h5_mall/store/index.css?0_2">
+<style>
+/* 底部是fixed定位，需要一个空div占位 */
+.footer-placeholder {
+height: 0.49rem;
+}
+.jiaobiao {
+padding: 0 0.04rem !important;
+min-width: 0.11rem !important;
+}
+.ui-badge-cornernum {
+min-width: 0.07rem;
+}
+.pdTips {
+padding: 0 0.06rem;
+height: 0.16rem;
+min-width: 0.11rem;
+line-height: 0.16rem;
+}
+.r50 {
+border-radius: 50%;
+-webkit-border-radius: 50%;
+}
+</style>
+<style type="text/css">
+body{
+background-image:
+}
+</style>
+<style type="text/css">
+body{
+background-repeat:
+}
+</style>
+<style type="text/css">
+body{
+background-color:#ffffff!important
+}
+</style>
+<style>
+.app-container {
+width: 100%;
+}
+.app{
+-webkit-overflow-scrolling: touch;
+}
+</style>
+</head>
+<body>
+<div id="cmsHeader">
+<div id="topHeader"></div>
+<div class="placeholder">&nbsp;</div>
+<header
+class="ui-header ui-header-stable ui-header-index ui-border-b"
+v-cloak
+>
+<div
+class="location"
+style="position: absolute"
+v-link-to="'/setPosition/index.html'"
+>
+<i
+class="sprites3 sprites3-address"
+aria-hidden="true"
+style="margin-top: 13px"
+></i>
+<span>
+{{ merchantMes.detailAddress || $t('请选择门店地址') }}
+</span>
+</div>
+<div class="fr">
+<div class="search" style="left: 1rem!important; right: 0.5rem!important;" v-link-to="'/search.html'">
+<i class="sprites3 sprites3-headSearch" aria-hidden="true"></i>
+{{ placeholder || $t('请输入您想搜索的商品') }}
+</div>
+<i
+class="sprites3 sprites3-gray-msg"
+v-link-to-userpage="'/message/message-center.html'"
+aria-hidden="true"
+></i>
+</div>
+</header>
+<div
+class="bottom-tool ui-flex ui-flex-align-end ui-flex-pack-center"
+style="display:show"
+id="bottom-tool"
+>
+<a href="#topHeader" class="backtop item ui-badge-wrap">
+<i class="sprites sprites-right-backTop" aria-hidden="true"></i>
+</a>
+</div>
+<cms-set-position
+:show.sync="showLocation"
+:call-back="updateLocation"
+></cms-set-position>
+<div :class="[showPopup ? 'show' : '', 'ui-actionsheet', 'tan-pin']" v-cloak>
+<div class="tanpin-inner">
+<div class="img">
+<a v-link-to="popUp.linkUrl" href="javascript:void(0)">
+<img width="100%" :alt="popUp.name" :src="popUp.imageUrl" alt="pic" />
+</a>
+</div>
+<div :class="[showPopup ? 'show' : '', 'close']" @click="showPopup=false">
+×
+</div>
+</div>
+</div>
+</div>
+<div class="app">
+<app-container :plans="plans" inline-template>
+<div class="app-container" style="width:100%;height:100%">
+<div v-for="s in styleSeq" v-html="s"></div>
+<div class="app-header">
+</div>
+<div class="app-panel">
+<ul :class="{'app-blank': displaySeq.length == 0}">
+<li v-for="decorator in displaySeq" :key="decorator._id"
+:id="decorator.moduleId">
+<module-decorator-1 :ref="decorator.moduleRef" :module-context="decorator">
+</module-decorator-1>
+</li>
+</ul>
+</div>
+</div>
+</app-container>
+</div>
+<!-- 底部是fixed定位，需要一个空div占位 xxxx -->
+<div class="footer-placeholder">&nbsp;</div>
+<footer class="ui-footer ui-footer-stable ui-border-t" v-cloak id="cms-footer">
+<ul class="ui-tiled">
+<li :class="{'active': current==='index'}">
+<a href="/index.html">
+<i class="sprites3 sprites3-index blur" aria-hidden="true"></i>
+<i class="sprites3 sprites3-index-red focus" aria-hidden="true"></i>
+<span class="name">{{$t('首页')}}</span>
+</a>
+</li>
+<li :class="{'active': current==='category'}">
+<a href="/category.html">
+<i class="sprites3 sprites3-category blur" aria-hidden="true"></i>
+<i class="sprites3 sprites3-category-red focus" aria-hidden="true"></i>
+<span class="name">{{$t('分类')}}</span>
+</a>
+</li>
+<li :class="{'active': current===middle.name}" v-if="middle.showMiddle == 1&&(!config.isO2O||(config.isO2O&&isWx))">
+<a :href="middle.url">
+<i class="sprites3 blur" :class="[middle.name?'sprites3-' + middle.name:'']" aria-hidden="true"></i>
+<i class="sprites3 focus " :class="[middle.name?'sprites3-' + middle.name + '-red':'']" aria-hidden="true"></i>
+<span class="name">{{$t(middle.title)}}</span>
+</a>
+</li>
+<li :class="{'active': current==='cart'}">
+<a href="/cart.html">
+<i :class="[current=='cart' ? 'sprites3-cart-red focus' : 'sprites3-cart blur', 'sprites3']" aria-hidden="true">
+<div class="ui-badge-cornernum bottom-cart" v-if="cartCount>0" v-cloak :class="{'r50':cartCount<10,'pdTips':9<cartCount}">{{cartCount>99?99+'+':cartCount}}</div>
+</i>
+<span class="name">{{$t('购物车')}}</span>
+</a>
+</li>
+<li :class="{'active': current==='mine'}">
+<a href="/my/home.html">
+<i class="sprites3 sprites3-home blur" aria-hidden="true"></i>
+<i class="sprites3 sprites3-home-red focus " aria-hidden="true"></i>
+<span class="name">{{$t('我')}}</span>
+</a>
+</li>
+</ul>
+</footer>
+<!--global scripts -->
+<script type="text/javascript" src="//webapi.amap.com/maps?v=1.3&key=4cbe65ccdb8919a83e3fa235b93b0fa9"></script>
+<script src="//res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+<script src="/cms/view/cms,frontier_guide/h5,app/templateJS.json"></script>
+<script src="//middleend-dev-statico2o.test.h.cn/cms/front/ncms/libs/libs.js?0_2"></script>
+<script src="//middleend-dev-statico2o.test.h.cn/h5_o2o/common.js?0_2"></script>
+<script src="/cms/view/diamond/config.do?k=h5.config&v=0_2"></script>
+<script type="text/javascript">
+if (window['superConfig']) {
+window.config = $.extend(true, window.config, window['superConfig']);
+}
+</script>
+<script src="//middleend-dev-statico2o.test.h.cn/cms/front/ncms/cms-decoration/h5-render/h5-render.js?0_2"></script>
+<script src="//middleend-dev-statico2o.test.h.cn/cms/front/ncms/components/components.js?0_2"></script>
+<!--global script end-->
+<!--header tail start-->
+<!--
+<link rel="stylesheet" href="/common.css?v=1498809209912">
+<link rel="stylesheet" href="/store/index.css?v=1498809209912">
+<link rel="stylesheet" href="/store/search.css?v=1498809209912">
+-->
+<script>
+new Vue({
+el: '#cmsHeader',
+i18n:i18n,
+data: {
+placeholder: "",
+locationCity: Vue.area.getArea().pN || '上海',
+show: true,
+showLocation: false,
+msgSummary: 0, //消息数量
+template: (window['template'] || window['frontTemplate']),
+merchantMes: {}, //门店数据
+popUp: {},
+showPopup: false
+},
+mounted: function () {
+this.getIndexAds();
+this.getMerchantMes();
+if (Vue.auth.loggedIn()) {
+this.getMsgSummary();
+}
+},
+methods: {
+getIndexAds: function () {
+var url = '/ad-whale-web/dolphin/getAdSource',
+self = this;
+var param = {
+platform: 2,
+pageCode: 'HOME',
+adCode: 'searchword,hotword',
+merchantId: Vue.cookie.getCookie('merchantId'),
+companyId: this.template.companyId
+};
+Vue.api.get(url, param, function (res) {
+//搜索提示词
+var words = [];
+if (!Vue.sessionStorage.getItem('index_popup')) {
+if (res.data.index_popup && res.data.index_popup.length > 0) {
+Vue.sessionStorage.setItem('index_popup', 1);
+self.popUp = res.data.index_popup[0];
+if (self.popUp.imageUrl) {
+self.showPopup = true;
+}
+}
+}
+if (res.data.searchword && res.data.searchword.length > 0) {
+res.data.searchword.forEach(function (v) {
+words.push(v.content || '')
+})
+self.placeholder = words.join(' ');
+}
+});
+},
+// 获取门店信息
+getMerchantMes: function () {
+var url = Vue.allUrl.getMerchantShopInfo;
+var params = {
+storeId: Vue.cookie.getCookie('merchant_id')
+}
+var that = this;
+Vue.api.post(url, params, function (res) {
+if (res.code == 0 && res.data) {
+that.merchantMes = res.data;
+var areaInfo = {
+province: {'name':'','code':that.merchantMes.provinceCode},
+city: {'name':'','code':that.merchantMes.cityCode},
+region: {'name':'','code':that.merchantMes.regionCode}
+}
+Vue.localStorage.setItem('areaInfo',areaInfo);
+Vue.localStorage.setItem('curLocation',areaInfo);
+}
+}, function () {
+//处理掉不显示报错
+});
+},
+getArea: function () {
+var provinceName,
+areaCode,
+self = this;
+if (Vue.browser.isApp()) {
+//需要从APP中获取区域信息
+// Vue.app.postMessage("getAreaCode", null, function(res){
+// areaCode = res;
+// return {
+// //pN: provinceName,
+// aC: areaCode
+// }
+// });
+} else {
+if (!Vue.localStorage.getItem('areaInfo')) {
+self.getConfig(function (r) {
+Vue.area.setArea(r.provinceName, r.provinceCode, r.cityName, r.cityCode,
+r.regionName, r.regionCode, 2);
+provinceName = Vue.localStorage.getItem('areaInfo').province.name;
+areaCode = Vue.localStorage.getItem('areaInfo').region.code;
+self.locationCity = provinceName
+})
+} else {
+provinceName = Vue.localStorage.getItem('areaInfo').province.name;
+areaCode = Vue.localStorage.getItem('areaInfo').region.code;
+self.locationCity = provinceName
+}
+}
+},
+getConfig: function (fun) {
+Vue.api.get("/api/commondata/getConfig", null, function (res) {
+if (res.data) {
+var param = {
+regionCode: res.data.defaultAreaCode || '310101'
+};
+Vue.api.get("/api/location/getCompleteAreaInfo", param, function (result) {
+if (fun) {
+fun(result.data);
+}
+});
+}
+});
+},
+updateLocation: function () {
+this.locationCity = Vue.area.getArea().pN;
+},
+getMsgSummary: function () {
+var self = this;
+var params = {
+companyId: self.template.companyId
+};
+if (!params.ut) {
+return;
+}
+Vue.api.get("/api/social/vl/message/getMsgSummary", params, function (result) {
+if (result.data) {
+var msg = 0;
+self.msgSummary += result.data.unReadMsgCount;
+if (self.msgSummary > 0) {
+msg = self.msgSummary > 99 ? '99+' : self.msgSummary;
+$('body').append('<div class="ui-badge-cornernum-1">' + msg + '</div>');
+}
+}
+});
+},
+}
+});
+</script>
+<script>
+$(window).scroll(function () {
+if ($(window).scrollTop() > 200) {
+$("#bottom-tool").show();
+} else {
+$("#bottom-tool").hide();
+}
+}).trigger('scroll');
+$('.backtop').click(function () {
+var backTop = $(window).scrollTop();
+var timer = setInterval(function () {
+var scrollTop = $(window).scrollTop();
+//如果用户向下滚动了页面
+if (scrollTop > backTop) {
+clearInterval(timer);
+return;
+}
+var speed = scrollTop / 5;
+backTop = scrollTop - speed;
+//
+$(window).scrollTop(backTop);
+//如果已到顶部
+if (backTop <= 0) {
+clearInterval(timer);
+}
+}, 40);
+})
+</script>
+<script>
+var template = window.template || window.frontTemplate;
+new Vue({
+el: '#cms-footer',
+i18n:i18n,
+data: {
+dHeight: 49,
+showFooter: false,
+current: 'index',
+cartCount: 0,
+show: false,
+config:window['config'],
+isWx:Vue.browser.weixin()
+},
+computed: {
+middle: function() {
+return this.config.footer;
+}
+},
+mounted: function () {
+var self = this;
+self.$nextTick(function () {
+self.showFooter = false;
+Vue.app.postMessage('hiddenHead', {
+'isHidden': '0'
+});
+});
+self.getCartCount();
+appRender.msgBus.$on("cartCount",function(){
+self.getCartCount();
+});
+},
+methods: {
+//获取购物车数目
+getCartCount: function () {
+"use strict";
+var self = this,params;
+var areaCode = '';
+if (Vue.localStorage.getItem('areaInfo') && Vue.localStorage.getItem('areaInfo').region){
+areaCode = Vue.localStorage.getItem('areaInfo').region.code || '';
+}
+params = {
+sessionId: Vue.session.getSessionId(),
+areaCode:areaCode
+}
+if(Vue.cookie.getCookie('storeId')){
+params.storeId = Vue.cookie.getCookie('storeId');
+params.modeType = 1;
+}
+//不用统一处理，防止99跳登录
+Vue.http.post('/api/cart/count', params, {
+emulateJSON: true
+}).then(function (result) {
+self.cartCount = result.data.data;
+});
+}
+}
+});
+</script>
+<!--header tail end-->
+<style>
+#tlbstoolbar{
+display:none;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#tlbstoolbar").remove();
+$("#toolbarstyle").remove();
+var scripts = $("script[src]");
+var patterns = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+for(var i=0;i<scripts.length;i++){
+var ip = scripts[i].src.match(patterns);
+if(ip != null && ip.length > 0){
+scripts[i].remove();
+}
+}
+setTimeout("$('#tlbstoolbar').remove();",1000);
+var iframes = document.getElementsByTagName('iframe');
+if(iframes != 'undefined' && iframes.length > 0){
+for (var i = 0; i < iframes.length; i++) {
+iframes[i].parentNode.removeChild(iframes[i]);
+}
+}
+(function($){
+var e = {
+nextAll: function(s) {
+var $els = $(), $el = this.next()
+while( $el.length ) {
+if(typeof s === 'undefined' || $el.is(s)) $els = $els.add($el)
+$el = $el.next()
+}
+return $els
+}
+}
+$.extend( $.fn, e )
+})(Zepto);
+$("#edge").nextAll().remove();
+});
+</script>
+<script>
+appRender.plans = [{"lifeStart":1587565077000,"componentCode":"slider","data":"%7B%22images%22%3A%5B%7B%22link%22%3A%7B%7D%2C%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565585309_24.980185404589882_f268a010-5e34-4bc6-8525-dccabf250b96.jpg%22%2C%22url%22%3A%22%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A800%2C%22oriHeight%22%3A481%7D%2C%7B%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565595253_64.92725037163936_42483ec0-0c50-4bcd-ac29-a6e4832ee287.png%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A660%2C%22oriHeight%22%3A429%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565603930_75.907528629755_c4cc9703-53ee-42eb-bc98-202338cceccf.jpg%22%2C%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A770%2C%22oriHeight%22%3A500%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565614918_79.01968643074756_1657efa1-7025-491c-bac8-f679ab3dd553.jpg%22%2C%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A770%2C%22oriHeight%22%3A500%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565636495_23.21463633054732_117405f4-2bac-4998-ae5e-17fe6fa73887.jpg%22%2C%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A800%2C%22oriHeight%22%3A572%7D%5D%7D","lifeEnd":1619101078000,"endDate":1619101078000,"name":"轮播","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004220000004483,"renderType":0,"startDate":1587565077000},{"lifeStart":1587484800000,"componentCode":"title","data":"%7B%22titleName%22%3A%22%E6%8F%AD%E9%98%B3%E6%81%92%E5%A4%A7%E4%B8%AD%E5%A4%AE%E5%85%AC%E5%9B%AD%22%2C%22titleType%22%3A%223%22%2C%22titlePosition%22%3A%22center%22%2C%22color%22%3A%22%23b48b32%22%2C%22fontSize%22%3A%2222%22%2C%22titleBgColor%22%3A%22%23ffffff%22%2C%22splitColor%22%3A%22%23b48b32%22%7D","lifeEnd":1902931199000,"endDate":1902931199000,"name":"标题","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004220000004739,"renderType":0,"startDate":1587484800000},{"lifeStart":1587565841000,"componentCode":"h5_multipic","data":"%7B%22images%22%3A%5B%7B%22link%22%3A%7B%22status%22%3Atrue%2C%22type%22%3A%22%E8%87%AA%E5%AE%9A%E4%B9%89%7Chttp%3A%2F%2Fmiddleend-dev-mo2o.test.h.cn%2Fpreview%2Fh5%2F2004220000004511.html%3F%22%2C%22data%22%3A%22http%3A%2F%2Fmiddleend-dev-mo2o.test.h.cn%2Fpreview%2Fh5%2F2004220000004511.html%3F%22%2C%22appData%22%3A%22http%3A%2F%2Fmiddleend-dev-mo2o.test.h.cn%2Fpreview%2Fh5%2F2004220000004511.html%3F%22%7D%2C%22url%22%3A%22http%3A%2F%2Fmiddleend-dev-mo2o.test.h.cn%2Fpreview%2Fh5%2F2004220000004511.html%3F%22%2C%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587571168895_87.42298613197907_0d47a7ee-6dcd-45a5-8d71-8c3fa6b59902.jpg%22%2C%22desc%22%3A%22%E6%81%92%E5%A4%A7%E5%AE%9D%E8%B4%AD%E6%88%BF%E5%95%86%E5%9F%8E%22%2C%22oriWidth%22%3A800%2C%22oriHeight%22%3A481%7D%5D%2C%22margin%22%3A1%7D","lifeEnd":1619101842000,"endDate":1619101842000,"name":"单列多图","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004220000004499,"renderType":0,"startDate":1587565841000},{"lifeStart":1587484800000,"componentCode":"spacing","data":"%7B%22height%22%3A%2225%22%2C%22color%22%3A%22%23ffffff%22%7D","lifeEnd":1902931199000,"endDate":1902931199000,"name":"辅助空白","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004230000000101,"renderType":0,"startDate":1587484800000},{"lifeStart":1587565793000,"componentCode":"h5_multipic","data":"%7B%22images%22%3A%5B%7B%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565807748_5.623829337080788_abb61533-0733-4412-9687-a7f6aed6c87f.png%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A748%2C%22oriHeight%22%3A498%7D%5D%2C%22margin%22%3A1%7D","lifeEnd":1619101794000,"endDate":1619101794000,"name":"单列多图","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004220000004491,"renderType":0,"startDate":1587565793000},{"lifeStart":1587484800000,"componentCode":"spacing","data":"%7B%22height%22%3A%2225%22%2C%22color%22%3A%22%23ffffff%22%7D","lifeEnd":1902931199000,"endDate":1902931199000,"name":"辅助空白","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004230000000105,"renderType":0,"startDate":1587484800000},{"lifeStart":1587565874000,"componentCode":"h5_multipic","data":"%7B%22images%22%3A%5B%7B%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565888997_48.56343786273726_7a4bf985-f6ff-45a4-8634-ce8eb50714d9.jpg%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A800%2C%22oriHeight%22%3A604%7D%5D%2C%22margin%22%3A1%7D","lifeEnd":1619101875000,"endDate":1619101875000,"name":"单列多图","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004220000004503,"renderType":0,"startDate":1587565874000},{"lifeStart":1587484800000,"componentCode":"spacing","data":"%7B%22height%22%3A%2225%22%2C%22color%22%3A%22%23ffffff%22%7D","lifeEnd":1902931199000,"endDate":1902931199000,"name":"辅助空白","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004230000000109,"renderType":0,"startDate":1587484800000},{"lifeStart":1587565822000,"componentCode":"h5_multipic","data":"%7B%22images%22%3A%5B%7B%22link%22%3A%7B%7D%2C%22url%22%3A%22%22%2C%22src%22%3A%22https%3A%2F%2Fcdn.oudianyun.com%2Fdev%2Fback-cms-web%2F1587565832712_67.64724829259991_9cf68948-1eb9-4fb7-baa0-61102306fa93.jpg%22%2C%22desc%22%3A%22%22%2C%22oriWidth%22%3A800%2C%22oriHeight%22%3A572%7D%5D%2C%22margin%22%3A1%7D","lifeEnd":1619101823000,"endDate":1619101823000,"name":"单列多图","componentVer":"v1","goods":null,"isLazy":0,"moduleId":2004220000004495,"renderType":0,"startDate":1587565822000}];
+</script>
+<script>
+appRender.components = [{"template":"<div class=\"slider-v1\">\n    <div class=\"swiper-container\">\n        <div class=\"swiper-wrapper\">\n            <div class=\"swiper-slide\" v-for=\"img in images\">\n                <span v-link-to=\"img.link.data\">\n                    <img :src=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n                </span>\n            </div>\n        </div>\n        <div class=\"swiper-pagination\"></div>\n    </div>\n</div>","dialect":"vue","componentCode":"slider","componentVer":"v1","style":".swiper-container {\n  width: 100%;\n  height: 100%; }\n  .swiper-container img {\n    display: block;\n    max-width: 100%;\n    height: auto;\n    width: 100%; }","initialize":"/**\n * Created by Jaron on 12/26/2016.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function () {\n            var vars = this.moduleContext.variables();\n            return {\n                images: vars && vars.images\n            }\n        },\n        methods: {\n            init: function () {\n                var self = this;\n                var lp = self.images.length > 1 ? true : false;\n                var el = $(self.$el).find('.swiper-container')[0];\n                self.slider = new Swiper(el, {\n                    loop: lp,\n                    autoplay: 3000,\n                    pagination: '.swiper-pagination',\n                    slidesPerView: 1,\n                    paginationClickable: true,\n                    autoplayDisableOnInteraction: false\n                });\n                \n            }\n        },\n        mounted: function () {\n\n            this.init();\n        },\n        beforeUpdate: function(){\n\n            this.slider.destroy(true,true);\n        },\n        updated: function () {\n\n            this.init();\n        },\n        beforeDestory: function () {\n\n            this.slider.destroy(true,true);\n        }\n    }\n}\n\n//# sourceURL=slider.js"},{"template":"<div class=\"index-image-v1\">\n    <ul>\n        <li v-for=\"img in images\">\n            <span v-link-to=\"img.link.data\" class=\"clearfix\">\n                <img v-if=\"editMode\" :src=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n                <img v-else v-lazy=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n            </span>\n        </li>\n    </ul>\n</div>","dialect":"vue","componentCode":"h5_multipic","componentVer":"v1","style":".index-image-v1 img {\n  width: 100%;\n  float: left; }\n\n.index-image-v1 a {\n  display: block; }","initialize":"/**\n * Created by Jaron on 12/26/2016.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function () {\n            var vars = this.moduleContext.variables();\n            var editMode = this.moduleContext.editing;\n            return {\n                images: vars && vars.images,\n                editMode:editMode\n            }\n        },\n        mounted: function () {\n            var self = this;\n            self.setImageMargin(self.moduleContext.variables().margin);\n            self.$watch(function () {\n                return self.moduleContext.variables().margin;\n            }, function (value) {\n                self.setImageMargin(value);\n            });\n        },\n        methods: {\n            setImageMargin: function (value) {\n                $(this.$el).find('li + li').each(function () {\n                    $(this).css('margin-top', value);\n                })\n            }\n        }\n    }\n}"},{"template":"<div class=\"index-image-v1\">\n    <ul>\n        <li v-for=\"img in images\">\n            <span v-link-to=\"img.link.data\" class=\"clearfix\">\n                <img v-if=\"editMode\" :src=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n                <img v-else v-lazy=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n            </span>\n        </li>\n    </ul>\n</div>","dialect":"vue","componentCode":"h5_multipic","componentVer":"v1","style":".index-image-v1 img {\n  width: 100%;\n  float: left; }\n\n.index-image-v1 a {\n  display: block; }","initialize":"/**\n * Created by Jaron on 12/26/2016.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function () {\n            var vars = this.moduleContext.variables();\n            var editMode = this.moduleContext.editing;\n            return {\n                images: vars && vars.images,\n                editMode:editMode\n            }\n        },\n        mounted: function () {\n            var self = this;\n            self.setImageMargin(self.moduleContext.variables().margin);\n            self.$watch(function () {\n                return self.moduleContext.variables().margin;\n            }, function (value) {\n                self.setImageMargin(value);\n            });\n        },\n        methods: {\n            setImageMargin: function (value) {\n                $(this.$el).find('li + li').each(function () {\n                    $(this).css('margin-top', value);\n                })\n            }\n        }\n    }\n}"},{"template":"<div class=\"index-image-v1\">\n    <ul>\n        <li v-for=\"img in images\">\n            <span v-link-to=\"img.link.data\" class=\"clearfix\">\n                <img v-if=\"editMode\" :src=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n                <img v-else v-lazy=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n            </span>\n        </li>\n    </ul>\n</div>","dialect":"vue","componentCode":"h5_multipic","componentVer":"v1","style":".index-image-v1 img {\n  width: 100%;\n  float: left; }\n\n.index-image-v1 a {\n  display: block; }","initialize":"/**\n * Created by Jaron on 12/26/2016.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function () {\n            var vars = this.moduleContext.variables();\n            var editMode = this.moduleContext.editing;\n            return {\n                images: vars && vars.images,\n                editMode:editMode\n            }\n        },\n        mounted: function () {\n            var self = this;\n            self.setImageMargin(self.moduleContext.variables().margin);\n            self.$watch(function () {\n                return self.moduleContext.variables().margin;\n            }, function (value) {\n                self.setImageMargin(value);\n            });\n        },\n        methods: {\n            setImageMargin: function (value) {\n                $(this.$el).find('li + li').each(function () {\n                    $(this).css('margin-top', value);\n                })\n            }\n        }\n    }\n}"},{"template":"<div class=\"index-image-v1\">\n    <ul>\n        <li v-for=\"img in images\">\n            <span v-link-to=\"img.link.data\" class=\"clearfix\">\n                <img v-if=\"editMode\" :src=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n                <img v-else v-lazy=\"img.src\" :title=\"img.desc\" alt=\"pic\">\n            </span>\n        </li>\n    </ul>\n</div>","dialect":"vue","componentCode":"h5_multipic","componentVer":"v1","style":".index-image-v1 img {\n  width: 100%;\n  float: left; }\n\n.index-image-v1 a {\n  display: block; }","initialize":"/**\n * Created by Jaron on 12/26/2016.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function () {\n            var vars = this.moduleContext.variables();\n            var editMode = this.moduleContext.editing;\n            return {\n                images: vars && vars.images,\n                editMode:editMode\n            }\n        },\n        mounted: function () {\n            var self = this;\n            self.setImageMargin(self.moduleContext.variables().margin);\n            self.$watch(function () {\n                return self.moduleContext.variables().margin;\n            }, function (value) {\n                self.setImageMargin(value);\n            });\n        },\n        methods: {\n            setImageMargin: function (value) {\n                $(this.$el).find('li + li').each(function () {\n                    $(this).css('margin-top', value);\n                })\n            }\n        }\n    }\n}"},{"template":"<div class=\"title-v1\">\n    <div>\n        <a href=\"javascript:void(0)\" class=\"title1\"></a>\n    </div>\n</div>","dialect":"js","componentCode":"title","componentVer":"v1","style":".title-v1 {\n  min-height: 0.18rem;\n  width: 100%;\n  position: relative;\n  overflow: hidden; }\n  .title-v1 .title1 {\n    text-decoration: none;\n    font-size: var(--size-normal);\n    color: var(--text-normal);\n    word-break: break-all;\n    word-wrap: break-word; }\n  .title-v1 .center {\n    text-align: center; }\n  .title-v1 .left {\n    text-align: left; }\n  .title-v1 .right {\n    text-align: right; }\n  .title-v1 .title2 {\n    border-bottom: 0.01rem solid var(--border-normal);\n    display: block; }\n  .title-v1 .titleLine {\n    height: 0.01rem;\n    background-color: var(--border-normal);\n    position: relative;\n    text-align: center;\n    top: 0.15rem; }\n  .title-v1 .title33 {\n    display: inline-block;\n    position: relative;\n    top: -0.1rem;\n    background-color: var(--bg-block);\n    color: var(--text-normal);\n    padding: 0.02rem 0.17rem; }\n  .title-v1 .title3 {\n    display: inline-block;\n    margin: 0 auto;\n    z-index: 2;\n    position: relative;\n    padding: 0 0.18rem; }\n  .title-v1 .title3:before {\n    content: ' ';\n    display: inline-block;\n    height: 1px;\n    width: 99.99rem;\n    position: absolute;\n    top: 50%;\n    right: 100%;\n    z-index: 1; }\n  .title-v1 .title3:after {\n    content: ' ';\n    display: inline-block;\n    height: 1px;\n    width: 99.99rem;\n    position: absolute;\n    top: 50%;\n    left: 100%;\n    z-index: 1; }\n  .title-v1 .title4 {\n    display: block;\n    position: relative;\n    text-indent: 0.1rem; }\n  .title-v1 .title4:before {\n    content: ' ';\n    display: block;\n    position: absolute;\n    width: 0.03rem;\n    left: 0.02rem;\n    height: 100%; }","initialize":"/**\n * Created by Jaron on 12/21/2016.\n */\n\nfunction initialize(elem, moduleContext) {\n    var $elem = $(elem),\n        variables = moduleContext.variables(),\n        moduleId = moduleContext.moduleId;\n\n    function refreshContent($elem, variables) {\n        $elem.children()\n            .removeClass()\n            .addClass(variables.titlePosition)\n            .css('backgroundColor', variables.titleBgColor);\n\n        var titleClass = 'title' + variables.titleType;\n        $elem.find('.title1')\n            .removeClass()\n            .addClass('title1 ' + titleClass)\n            .css({\n                color: variables.color,\n                fontSize: variables.fontSize/100 + 'rem',\n                borderBottomColor: variables.splitColor\n            })\n            .text(i18n1(variables.titleName));\n\n        $elem.find('style').remove();\n        if (variables.titleType == 3) {\n            $elem.prepend('<style>#ti' + moduleId + ' .title' + variables.titleType + '::after,#ti' + moduleId + ' .title' + variables.titleType + '::before{background-color:' + variables.splitColor + '}</style>');\n        }\n        if (variables.titleType == 4) {\n            $elem.prepend('<style>#ti' + moduleId + ' .title' + variables.titleType + '::before{background-color:' + variables.color + '}</style>');\n        }\n    }\n\n    $elem.attr('id', 'ti' + moduleId);\n    refreshContent($elem, variables);\n\n    return {\n        reload: function () {\n            refreshContent($elem, variables);\n        }\n    }\n}\n\n//# sourceURL=title.js"},{"template":"<div  class=\"index-spacing-v1\" :style=\"{'height':vars.height/100 + 'rem','backgroundColor':vars.color}\">\n\n</div>","dialect":"vue","componentCode":"spacing","componentVer":"v1","style":".index-spacing-v1 {\n  height: 0.25rem; }","initialize":"/**\n * Created by user on 2017/1/13.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function() {\n            var variables = this.moduleContext.variables();\n            return {\n                vars: variables,\n                //广告项\n                adItems: [],\n                //margin-right value\n                height: variables.height,\n                color:variables.color\n            };\n        }\n    }\n}\n\n//# sourceURL=spacing.js"},{"template":"<div  class=\"index-spacing-v1\" :style=\"{'height':vars.height/100 + 'rem','backgroundColor':vars.color}\">\n\n</div>","dialect":"vue","componentCode":"spacing","componentVer":"v1","style":".index-spacing-v1 {\n  height: 0.25rem; }","initialize":"/**\n * Created by user on 2017/1/13.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function() {\n            var variables = this.moduleContext.variables();\n            return {\n                vars: variables,\n                //广告项\n                adItems: [],\n                //margin-right value\n                height: variables.height,\n                color:variables.color\n            };\n        }\n    }\n}\n\n//# sourceURL=spacing.js"},{"template":"<div  class=\"index-spacing-v1\" :style=\"{'height':vars.height/100 + 'rem','backgroundColor':vars.color}\">\n\n</div>","dialect":"vue","componentCode":"spacing","componentVer":"v1","style":".index-spacing-v1 {\n  height: 0.25rem; }","initialize":"/**\n * Created by user on 2017/1/13.\n */\nfunction initialize(template) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function() {\n            var variables = this.moduleContext.variables();\n            return {\n                vars: variables,\n                //广告项\n                adItems: [],\n                //margin-right value\n                height: variables.height,\n                color:variables.color\n            };\n        }\n    }\n}\n\n//# sourceURL=spacing.js"},{"template":"<div v-cloak class=\"goods-r1c1b-v1\" v-bind:id=\"'goods-'+moduleId\">\n    <div class=\"prod-nav\" v-if=\"vars.displayNav && vars.useNav && moduleCategory && moduleCategory.length>0\">\n        <div class=\"transverse\">\n            <ul class=\"clearfix\"  :style=\"categoryStyleObj\">\n                <li class=\"scroller-nav-li\"\n                    :class=\"{'active': selectedmoduleCategoryId == c.categoryId,'ui-border-r': idx != moduleCategory.length-1}\"\n                    v-for=\"(c,idx) in moduleCategory\"\n                    @click=\"isClick(c.categoryId,$event)\">\n                    <img class=\"category-icon\" v-bind:src=\"c.pictureUrl || '//cdn.oudianyun.com/h5_static/1540892053183_2114_1.png'\" alt=\"pic\">\n                    <span>{{c.categoryName}}</span>\n                </li>\n            </ul>\n        </div>\n    </div>\n    <div class=\"\" v-if=\"moduleProdList && moduleProdList.length > 0\" v-cloak>\n        <!--商品列表-->\n        <ul class=\"goods-list\" v-if=\"!isHousePlatform\">\n            <li class=\"\" v-for=\"(pro,index) in moduleProdList\" :key=\"pro.mpId\" v-link-to=\"pro.h5DetailUrl\">\n                <div class=\"goods-img\">\n                    <img v-lazy=\"pro.picUrl||defaultImg\" width=\"100%\" alt=\"pic\">\n                </div>\n                <div class=\"goods-info\">\n                    <div class=\"ui-nowrap mgt10\">\n                        <span class=\"mp-name f14 c3 h32 lh16\">{{pro.mpName}}</span>\n                    </div>\n                    <p class=\"baseL1\">\n                        <span class=\"act-label mgR5 promotion-icon-text\" v-for=\"(proIcon, pIdx) in pro.promotionIcon\" :style=\"{backgroundColor: '#'+proIcon.bgColor,color: '#'+proIcon.fontColor}\" :key=\"pIdx\">{{proIcon.iconText}}</span>\n                    </p>\n                    <p v-if=\"pro.availablePrice||pro.originalPrice\">\n                        <span class=\"f16 lh16 h16 text-price\" v-if=\"pro.availablePrice\">{{pro.availablePrice | currency('¥')}}</span>\n                        <span class=\"f10 c9 line-through\" v-if=\"pro.originalPrice\">{{pro.originalPrice | currency('¥')}}</span>\n                    </p>\n                    <p v-if=\"!pro.availablePrice&&!pro.originalPrice\">\n                        <span class=\"f10 c9 lh30\">{{$t('暂无价格')}}</span>\n                    </p>\n                    <p v-if=\"vars.displayEvaluate && !editMode\">\n                        <span class=\"f10 c9 ui-nowrap\" v-if=\"pro.ratingCount && pro.ratingCount > 0\">\n                            <span class=\"theme\">{{pro.ratingCount}}</span>{{$t('条评论')}} {{$t('好评')}}\n                            <span class=\"theme\">{{pro.positiveRate + '%'}}</span>\n                        </span>\n                        <span class=\"f10 c9 ui-nowrap\" v-if=\"!pro.ratingCount || pro.ratingCount == 0\">\n                            {{$t('暂无评论')}}\n                        </span>\n                    </p>\n                    <i class=\"sprites sprites-search-cart overwrite-search-cart\" @click=\"addItemInCart(pro,$event)\" v-if=\"vars.displayBuyBtn && vars.useBuyBtn\" aria-hidden=\"true\"></i>\n                </div>\n            </li>\n        </ul>\n        <ul v-if=\"isHousePlatform\" class=\"house-r1-c1-b-ul\">\n            <li class=\"house-r1-c1-b-ul-li\" v-for=\"(pro,index) in moduleProdList\" :key=\"pro.prodId\" @click=\"goDetailPage(pro)\">\n                <div class=\"card-box\">\n                    <div class=\"img-box\">\n                        <img v-lazy=\"pro.prodDetailPicUrl||defaultImg\" alt=\"pic\">\n                    </div>\n                    <div class=\"title-name\">{{pro.prodName}}</div>\n                    <div class=\"flag-info\">\n                        <span class=\"flag-bar\" v-if=\"pro.prodSellPoint\">{{pro.prodSellPoint}}</span>\n                    </div>\n                    <div class=\"ext-info\">\n                        <div style=\"display: flex;padding-right: 8px;\">\n                            <span class=\"place\">{{pro.prodAddress}}</span><span class=\"size\">{{pro.areaScope}}</span>\n                        </div>\n                        <span class=\"unit-price\">{{pro.prodPrice}}</span>\n                    </div>\n                </div>\n            </li>\n        </ul>\n    </div>\n    <div v-if=\"(!moduleProdList || moduleProdList.length == 0) && editMode\">\n        <img src=\"//cdn.oudianyun.com/h5_static/goods-r1c1b.png\" alt=\"$t('单列大图')\">\n    </div>\n</div>","dialect":"vue","componentCode":"goods-r1c1b","componentVer":"v1","style":"@charset \"UTF-8\";\n/* 推荐列表 */\nbody {\n  font-family: 'Microsoft Yahei', 'PingFangSC-Regular'; }\n\n.baseL1 {\n  height: 0.18rem;\n  line-height: 0.18rem;\n  margin: 0;\n  padding: 0; }\n\n.theme {\n  color: var(--text-price); }\n\n.ui-list-col .ui-list-info {\n  padding-right: 0.12rem;\n  -webkit-box-pack: start; }\n\n.transverse {\n  width: 100%;\n  overflow-x: hidden; }\n\n.ui-loading-block .ui-loading-lyf {\n  width: 0.8rem;\n  height: 0.8rem;\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-box-align: center;\n  text-align: center;\n  border-radius: 0.06rem;\n  color: var(--text-bright);\n  font-size: var(--size-big); }\n\n.ui-loading-block .ui-loading-lyf-icon {\n  width: 100%;\n  height: 100%;\n  border-radius: 0.06rem;\n  display: block;\n  background-size: 100% auto;\n  background-repeat: no-repeat;\n  background-image: url(\"\"); }\n\n.goods-r1c1b-v1 .icons4-Addcart {\n  width: 0.25rem;\n  height: 0.25rem;\n  background-position: -0.35rem -2.49rem;\n  background-size: 3.75rem auto !important; }\n\n.goods-r1c1b-v1 .mgt10 {\n  margin-top: 0.1rem; }\n\n.goods-r1c1b-v1 .mgl10 {\n  margin-left: 0.1rem; }\n\n.goods-r1c1b-v1 .goods-list li {\n  background: var(--bg-block);\n  margin-bottom: 0.1rem; }\n\n.goods-r1c1b-v1 .goods-list .goods-info {\n  position: relative;\n  padding-left: 0.1rem; }\n\n.goods-r1c1b-v1 .goods-list .icons4-Addcart {\n  position: absolute;\n  right: 0.1rem;\n  bottom: 0; }\n\n.goods-r1c1b-v1 .goods-list .overwrite-search-cart {\n  position: absolute;\n  right: 0.09rem;\n  bottom: 0; }\n\n.goods-r1c1b-v1 img {\n  width: 100%; }\n\n.goods-r1c1b-v1 .ui-list > li {\n  position: relative;\n  margin-left: 0.1rem;\n  display: -webkit-box; }\n\n.goods-r1c1b-v1 .ui-list > li > a {\n  display: -webkit-box; }\n\n.goods-r1c1b-v1 .ui-list-info {\n  -webkit-box-flex: 1;\n  padding-top: 0.1rem;\n  padding-bottom: 0.1rem;\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  padding-right: 0.12rem;\n  -webkit-box-pack: start; }\n\n.goods-r1c1b-v1 .ui-nowrap-multi {\n  display: -webkit-box;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  word-wrap: break-word;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 2; }\n\n.goods-r1c1b-v1 .ui-list-info p {\n  color: var(--text-light);\n  font-size: var(--size-normal); }\n\n.goods-r1c1b-v1 .ui-nowrap {\n  max-width: 100%;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis; }\n\n.goods-r1c1b-v1 .act-label {\n  display: inline-block;\n  margin-right: 0.03rem;\n  text-align: center;\n  box-sizing: content-box; }\n  .goods-r1c1b-v1 .act-label img {\n    float: left; }\n\n.goods-r1c1b-v1 .line-through {\n  text-decoration: line-through;\n  -moz-text-decoration-color: var(--border-normal);\n  -moz-text-decoration-style: double;\n  -webkit-text-decoration-color: var(--border-normal);\n  -webkit-text-decoration-style: solid; }\n\n.goods-r1c1b-v1 .category-icon {\n  width: 0.15rem;\n  height: 0.15rem;\n  display: block;\n  margin: 0 auto; }\n\n.goods-r1c1b-v1 .prod-nav {\n  padding: 0.1rem 0;\n  color: var(--text-lighter);\n  background-color: var(--bg-block);\n  text-align: center;\n  font-size: var(--size-small); }\n  .goods-r1c1b-v1 .prod-nav .ui-col-25 {\n    width: 25%; }\n  .goods-r1c1b-v1 .prod-nav .scroller-nav-li {\n    float: left;\n    padding: 0 0.2rem;\n    border-bottom: 0.02rem solid transparent; }\n  .goods-r1c1b-v1 .prod-nav .scroller-nav-li.active {\n    color: var(--text-price); }\n\n.house-r1-c1-b-ul {\n  padding: 10px 0 !important; }\n  .house-r1-c1-b-ul .house-r1-c1-b-ul-li {\n    padding: 0 12px 12px 12px; }\n    .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box {\n      box-shadow: 0 0 13px #ccc;\n      border-radius: 4px;\n      padding: 10px; }\n      .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .img-box {\n        width: 100%;\n        height: 2.7rem; }\n        .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .img-box img {\n          width: 100%;\n          height: 100%;\n          border-radius: 4px; }\n      .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .title-name {\n        font-size: 19px;\n        color: #333;\n        font-weight: 600;\n        line-height: 0.45rem;\n        height: 0.45rem; }\n      .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .flag-info {\n        margin-bottom: 7px; }\n        .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .flag-info .flag-bar {\n          font-size: 10px;\n          border-radius: 4px;\n          padding: 3px 5px;\n          display: inline-block;\n          background-color: #fff3e5;\n          color: #ff8e0c; }\n      .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .ext-info {\n        margin-bottom: 3px;\n        display: flex;\n        justify-content: space-between; }\n        .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .ext-info .place, .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .ext-info .size {\n          font-size: 14px;\n          line-height: 15px;\n          color: #9299a7;\n          margin-bottom: 7px; }\n        .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .ext-info .place {\n          overflow: hidden;\n          text-overflow: ellipsis;\n          white-space: nowrap;\n          flex: auto;\n          padding-right: 6px; }\n        .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .ext-info .size {\n          flex: none; }\n        .house-r1-c1-b-ul .house-r1-c1-b-ul-li .card-box .ext-info .unit-price {\n          font-size: 15px;\n          line-height: 15px;\n          color: #dd0312;\n          font-weight: 600;\n          flex: none; }","initialize":"function initialize(template, api) {\n    return {\n        template: template,\n        props: ['moduleContext'],\n        data: function () {\n            var variables = this.moduleContext.variables();\n            var dataList;\n            var moduleId = this.moduleContext.moduleId;\n            var editMode = this.moduleContext.editing;\n            var templateJson = window.template || window.frontTemplate;\n            var selectedCId, goods = [],\n                catList = [],\n                isEmpty = false;\n            dataList = this.moduleContext.goodsList();\n            goods = dataList.moduleDataList || [];\n            catList = dataList.categoryList || [];\n            isEmpty = goods.length > 0 ? false : true;\n            selectedCId = catList.length > 0 ? catList[0].categoryId : null;\n            return {\n                pullDown: false,\n                defaultImg: templateJson.h5_defaultImg || '',\n                nomore: false,\n                pageNo: 1,\n                pageSize: 10,\n                selectedmoduleCategoryId: variables.displayNav ? selectedCId : '',\n                vars: variables,\n                rawModuleProdList: goods, //cms后台返回的未经过前台刷新接口刷新的原始商品数据\n                moduleProdList: [], //经过前台刷新接口刷新过的商品数据\n                moduleCategory: catList,\n                totalPage: 1,\n                editMode: editMode,\n                isEmpty: isEmpty,\n                moduleId: moduleId,\n                scrollerNav: null,\n                categoryStyleObj: null,\n                windowH: 0,\n                windowW: 0,\n                isBusy: false,\n                api: api,\n                imgHeight: 'auto',\n                flag: false, //true:点击 false:滚动\n                h5_cms_loadingImg: templateJson.h5_cms_loadingImg\n            }\n        },\n        computed: {\n            goodsParams: function () {\n                return {\n                    categoryId: this.selectedmoduleCategoryId,\n                    pageNo: this.pageNo,\n                    pageSize: this.pageSize,\n                    moduleId: this.moduleId\n                }\n            },\n            isHousePlatform: function(){\n                var isBackHouse = Vue.cookie.getCookie('platformId') == 8; //后台编辑页面通过platformId判断是否是商城;\n                var res = this.editMode ? isBackHouse:config.isO2O;\n                return res; // 是否是房商城;\n            }\n        },\n        mounted: function () {\n            var self = this,\n                mpIds; //页面上下偏移距离\n            self.windowH = $(window).height();\n            self.windowW = $(window).width();\n\n            window.addEventListener('scroll', self.handler);\n            self.moduleContext.on('data-change', function (vars) {\n                self.vars = vars;\n            });\n            self.moduleContext.on('goods-change', function (goods) {\n                var goodsList = [];\n                self.moduleCategory = goods.categoryList;\n                self.initScrollerNav();\n                mpIds = self.getMpIds(goods.moduleDataList);\n                if (mpIds.length == 0) {\n                    self.moduleProdList = goodsList;\n                    self.$nextTick(function () {\n                        self.categoryStyleObj = self.reCalculateWid('.scroller-nav-li');\n                    });\n                    return\n                }\n                self.api.getGoodsRefresh({\n                    params: {\n                        mpIds: mpIds.join(',')\n                    }\n                }, function (result) {\n                    goodsList = self.refreshGoods(goods.moduleDataList, result.data.plist);\n                    self.moduleProdList = goodsList;\n                    self.$nextTick(function () {\n                        self.categoryStyleObj = self.reCalculateWid('.scroller-nav-li');\n                    });\n                    self.resetImg();\n                });\n            });\n            //加载第一页商品数据\n            self.goodsToView(function () {\n                //绑定页面滚动事件\n                self.resetImg();\n            });\n        },\n        watch: {\n            'vars.displayNav': function (val) {\n                if (val) {\n                    this.initScrollerNav();\n                } else {\n                    if (this.scrollerNav) {\n                        this.scrollerNav.destroy();\n                    }\n                }\n            }\n        },\n        methods: {\n            goDetailPage(item) {\n                appRender.goodsH5DetailPage.goDetailPage(item.prodId)\n            },\n            handler: function () {\n                var self = this,\n                    boundRectObj, offset = 100;\n                if (self.isBusy) {\n                    return\n                }\n                boundRectObj = self.$el.getBoundingClientRect();\n                if (boundRectObj.bottom >= (0 - offset) && boundRectObj.bottom <= self.windowH + offset) { //栏目尾部出现在可是区域内，包括从上面滑入和从下面滑入\n                    self.isBusy = true;\n                    if (self.pageNo < self.totalPage) {\n                        self.pageNo += 1;\n                        //滚动触发则click置为false\n                        self.flag = false;\n                        self.goodsToView(function () {\n                            self.$nextTick(function () {\n                                self.categoryStyleObj = self.reCalculateWid('.scroller-nav-li');\n                            });\n                            self.resetImg();\n                        });\n                    } else {\n                        self.nomore = true;\n                        self.isBusy = false;\n                        self.moduleContext.completed();\n                    }\n                }\n            },\n            resetImg: function () {\n                var self = this,\n                    width;\n                if (self.imgHeight && self.imgHeight != 'auto') {\n                    return;\n                }\n                self.$nextTick(function () {\n                    width = $(self.$el).find('.goods-img').width();\n                    self.imgHeight = width;\n                });\n            },\n            reCalculateWid: function (selector) {\n                var wid = 0,\n                    self = this;\n                $(self.$el).find(selector).each(function () {\n                    if (typeof $.fn.outerWidth === 'function') { //jQuery\n                        wid = wid + $(this).outerWidth() + 2;\n                    } else { //zepto\n                        wid = wid + $(this).width() + 2;\n                    }\n                });\n                if (!wid) {\n                    return;\n                }\n                return {\n                    'width': (wid + 1) + 'px'\n                };\n            },\n            catListAndtotalPage: function (result) {\n                var self = this;\n                if (result.data && result.data.listObj && result.data.listObj.length > 0) {\n                    self.totalPage = result.data.totalPage;\n                }\n            },\n            initScrollerNav: function () {\n                var self = this;\n                if(!self.vars.displayNav || !self.vars.useNav) return;\n                //动态计算分类导航的宽度\n                self.$nextTick(function () {\n                    self.categoryStyleObj = self.reCalculateWid('.scroller-nav-li');\n                    setTimeout(function () {\n                        self.scrollerNav = new fz.Scroll('#goods-' + self.moduleId + ' .transverse', {\n                            scrollY: false,\n                            scrollX: true\n                        });\n                    }, 200);\n                });\n            },\n            getMpIds: function (goodsArr) {\n                if (!goodsArr || goodsArr.length == 0) {\n                    return [];\n                }\n                var mpIds = $.map(goodsArr, function (item, idx) {\n                    return item.mpId;\n                });\n                return mpIds;\n            },\n            goodsToView: function (cb) {\n                var self = this,\n                    mpIds = [],\n                    goodsList;\n                self.pullDown = true;\n                if (self.totalPage != 0 && self.pageNo > self.totalPage) {\n                    self.moduleContext.completed();\n                    return;\n                }\n\n                //获取分页商品数据\n                self.api.getGoods({\n                    params: self.goodsParams\n                }, function (res) {\n                    self.pullDown = false;\n                    if (res.data && res.data.listObj && res.data.listObj.length > 0) {\n                        self.totalPage = res.data.totalPage;\n                        mpIds = self.getMpIds(res.data.listObj);\n                        if (!mpIds || mpIds.length==0) {\n                            self.isBusy = false;\n                                if (self.flag) {\n                                    self.moduleProdList = [];\n                                }\n                            return;\n                        }\n                        if (self.flag) {\n                            self.moduleProdList = res.data.listObj;\n                        } else {\n                            self.moduleProdList = self.moduleProdList.concat(res.data.listObj);\n                        }\n\n                        setTimeout(function() {\n                            //获取分页刷新商品数据\n                            self.api.getGoodsRefresh({\n                                params: {\n                                    mpIds: mpIds.join(',')\n                                }\n                            }, function (result) {\n                                self.isBusy = false;\n                                //刷新界面展示\n                                goodsList = self.refreshGoods(res.data.listObj, result.data.plist);\n                                if (self.flag) {\n                                    self.moduleProdList = goodsList;\n                                } else {\n                                    var index = self.moduleProdList.length - goodsList.length;\n                                    //拼接新数据\n                                    var newArr = self.moduleProdList.concat(goodsList);\n                                    //删除上一步添加的数据\n                                    newArr.splice(index,goodsList.length);\n                                    self.moduleProdList = newArr;\n                                }\n                                if (self.selectedmoduleCategoryId==null || self.selectedmoduleCategoryId==-1){\n                                    //搜索条件中没有指定category搜索，则使用返回数据中的分类导航数据\n                                    self.moduleCategory = res.data.navCategoryList;\n                                    self.initScrollerNav();\n                                }\n                                if (typeof cb === 'function') {\n                                    cb();\n                                }\n                            });\n                        }, 200);\n                    } else {\n                        self.isBusy = false;\n                        if (self.flag) {\n                            self.moduleProdList = [];\n                        }\n                    }\n                });\n            },\n            refreshGoods: function (ori, dest) {\n                var temp = [];\n\n                $.each(ori, function (g, gItem) {\n                    $.each(dest, function (d, dItem) {\n                        if (gItem.mpId === dItem.mpId) {\n                            temp.push($.extend(true, gItem, dItem));\n                        }\n                    });\n                });\n                return temp;\n            },\n            isClick: function (cId, e) {\n                var self = this;\n                if (self.scrollerNav) {\n                    self.scrollerNav.scrollToElement(e.target, 500, true, true);\n                }\n                self.selectedmoduleCategoryId = cId;\n                self.flag = true;\n                self.pageNo = 1;\n                self.isBusy = true;\n                self.goodsToView(function () {\n                    self.$nextTick(function () {\n                        self.categoryStyleObj = self.reCalculateWid('.scroller-nav-li');\n                    });\n                    self.resetImg();\n                });\n            },\n            addItemInCart: function (item, e) {\n                var self = this;\n                var param = {\n                    mpId: item.mpId,\n                };\n                var url;\n                e.stopPropagation();\n                Vue.api.post(Vue.allUrl.productBaseInfo, {mpId: item.mpId}, (result) => {\n                  if (result.data) {\n                      self.typeOfProduct = result.data.typeOfProduct;\n                      if(self.typeOfProduct == 3 || self.typeOfProduct == 2){\n                          if (Vue.browser.isApp()) {\n                              url =  config.appSchema + '://productdetail?body={\"mpId\":' +  item.mpId + '}';\n                          } else {\n                              url =  \"/detail.html?itemId=\"+ item.mpId;\n                          }\n                          window.location.href = url;\n                      } else{\n                        self.api.addCart({\n                            params: param\n                        }, function (res) {\n                            $.tips({\n                                content: self.$t('添加成功'),\n                                stayTime: 2000,\n                                type: \"success\"\n                            });\n                            self.getCartCount();\n                        });\n                      }\n                  }\n                }, (result) => {\n                    $.tips({\n                        content: self.$t('加车失败'),\n                        stayTime: 2000,\n                        type: \"success\"\n                    });\n                });\n\n            },\n            //获取购物车数目\n            getCartCount: function () {\n                var self = this;\n                if (Vue.browser.isApp()) {\n                    Vue.app.postMessage('addCartSuccess');\n                } else {\n                    appRender.msgBus.$emit(\"cartCount\");\n                    self.api.cartCount(function (res) {\n                        self.cartCount = res.data || 0;\n                    });\n                }\n            }\n        },\n        destroyed: function () {\n            window.removeEventListener('scroll', this.handler);\n        }\n    }\n}\n//# sourceURL=goods-r1c1b.js"}];
+</script>
+<script>
+var utils = appRender.utils;
+function getAvailablePlans() {
+return utils.filter(appRender.plans, function (plan) {
+return !plan.renderType
+});
+}
+$(function () {
+appRender.decorator();
+appRender.Page();
+new Vue({
+el: '.app',
+i18n:i18n,
+data: {
+plans:getAvailablePlans()
+}
+});
+});
+</script>
+<span id="edge" style="display:none;"></span>
+</body>
+</html>

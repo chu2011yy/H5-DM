@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="range" onchange="changeScale(event.target.value/100)">
+    <script type="text/javascript">
+        const canvas = document.createElement('canvas');
+        document.body.append(canvas);
+        const image = new Image();
+        image.src = "./body_bg.jpg";
+        const drawImageInfo = {
+            target: null,
+            scale: 1,
+            height: 0,
+            width: 0,
+            canvas,
+            image
+        }
+        image.onload = (data) =>{
+            const {
+                height,
+                width
+            } = data.target;
+            drawImageInfo.target = data.target;
+            drawImageInfo.height = height;
+            drawImageInfo.width = width;
+            changeScale();
+        }
+        function changeScale(scale) {
+            if (scale) {
+                drawImageInfo.scale = scale;
+            }
+            const changeHeight = drawImageInfo.height * drawImageInfo.scale;
+            const changeWidth = drawImageInfo.width * drawImageInfo.scale;
+            drawImageInfo.canvas.setAttribute('height', drawImageInfo.height);
+            drawImageInfo.canvas.setAttribute('width', drawImageInfo.width);
+            const ctx =  drawImageInfo.canvas.getContext("2d");
+            ctx.scale(drawImageInfo.scale, drawImageInfo.scale);
+            ctx.drawImage(drawImageInfo.image, 0, 0, drawImageInfo.width, drawImageInfo.height);
+        }
+        drawImageInfo.canvas.ontouchmove = (event) => {
+            
+        }
+    </script>
+</body>
+</html>

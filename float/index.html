@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            -webkit-user-select: none;
+        }
+        div{
+            font-size:28px;text-align:center;float:left;
+            width:50%;
+        }
+        div:after{
+            display:block;
+            height:0;
+            content:"";
+            clear:both;
+            visibility:hidden;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const fragment = document.createDocumentFragment();
+        for(let i=0;i<100;i++){
+            createDiv(i);
+        }
+        document.body.appendChild(fragment);
+        function createDiv(text){
+            const div = document.createElement('div');
+            const maxHeight = 600;
+            const minHeight = 100;
+            const height = parseInt(Math.random()*(maxHeight-minHeight) + minHeight);
+            const getRandomColorValue = ()=>{
+                return parseInt(Math.random()*16).toString(16);
+            }
+            let color='';
+            for(let i=0;i<6;i++){
+                color += getRandomColorValue();
+            }
+            div.innerText=text;
+            div.style.cssText = `height:${height}px;line-height:${height}px;background:#${color};`;
+            fragment.appendChild(div);
+        }
+    </script>
+</body>
+</html>

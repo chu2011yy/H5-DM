@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div onclick="testClick(event)" ontouchstart="testtouch(event)">touch和click</div>
+    <div onclick="clickHandler(event)">asadf</div>
+    <div class="test"></div>
+    <script type="text/javascript">
+        const event = document.createEvent('Event');
+        event.initEvent('build', true, true);
+        const div = document.querySelector('.test');
+        div.addEventListener('build', build);
+        function clickHandler(e) {
+            div.dispatchEvent(event);
+        }
+        function build(e) {
+            console.log('触发build')
+        }
+        function testClick(event) {
+            console.log('click');
+            event.stopImmediatePropagation();
+            console.log('stopImmediatePropagation');
+        }
+        function testtouch() {
+            console.log('ontouch')
+        }
+
+    </script>
+</body>
+</html>

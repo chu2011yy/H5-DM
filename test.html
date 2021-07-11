@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            display: flex;
+            text-align: justify;
+        }
+
+        .box div.item {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="item">askljafklajdljflkajdlfaskljafklajdljflkajdlf</div>
+        <!-- <div class="item">隆纳撒打发撒地方隆纳撒打发撒地方隆纳撒打发撒地方</div> -->
+        <span>盎司附近</span>
+    </div>
+    <image id="image"></image>
+    <script>
+        function lastMonthList(data, number) {
+            if (data === null || data === undefined) return [];
+            const resultArr = [];
+            const arr = data.split('-');
+            let [
+                year,
+                month
+            ] = arr;
+            for (let i = 0; i < number; i++) {
+                if (month == 1) {
+                    month = 12;
+                    --year;
+                } else {
+                    --month;
+                }
+                resultArr.unshift(`${year}-${month.toString().length==2?month:'0'+month}`);
+            }
+            return resultArr;
+        }
+        console.log(lastMonthList('2020-01', 12));
+        var img = new Image();
+        img.setAttribute('crossOrigin', 'anonymous');
+        img.crossOrigin= 'anonymous'
+        img.src = 'test.png'||'https://hdbbmp-dev.oss-cn-shenzhen.aliyuncs.com/hdb/2020/08/27/2aeb4b3d088d42e39efb73034b25394e';
+        img.onload = () => {
+            var canvas = document.createElement('canvas');
+            canvas.width=img.width;
+            canvas.height=img.height;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0)
+            var strDataURI = canvas.toDataURL("image/jpeg");
+            document.getElementById('image').src=strDataURI;
+            saveFile(strDataURI,'test.jpg');
+            function saveFile(data, filename) {
+                var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                save_link.href = data;
+                save_link.download = filename;
+                var event = document.createEvent('MouseEvents');
+                event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0,
+                    null);
+                save_link.dispatchEvent(event);
+            }
+        }
+    </script>
+</body>
+
+</html>

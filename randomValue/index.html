@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .box{
+            transition: all .6s ease;
+            width: auto;
+            height: 160px;
+            box-shadow: 0px 0px 6px #333;
+            margin: 50px;
+            text-align: center;
+            color: #333;
+            font-weight: 700;
+            font-size: 30px;
+            line-height: 160px;
+            /* display: inline-block; */
+            border-radius: 4px;
+            position: relative;
+        }
+        span{
+            color: #555;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 20px;
+            position:absolute;
+            top:-26px;
+            left:50%;
+            transform:translateX(-50%)
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const randomValue = {
+            isArray(arr) {
+                return Object.prototype.toString.call(arr) === '[object Array]';
+            },
+            getRandomEnum(enumArr){
+                if(!this.isArray(enumArr)) return '';
+                return enumArr[Math.floor(Math.random()*enumArr.length)];
+            },
+            /**
+            *随机范围值
+            */
+            getRandomRoundValue(min=0, max=1, pointFixed=0){
+                return (Math.random()*(max - min) + min).toFixed(pointFixed);
+            },
+            /**
+            *16进制数随机
+            */
+            getRandomHex: function(number=1){
+                return this.getRandomRadix(number,16);
+            },
+            /**
+            *2|8|16等进制数随机
+            */
+            getRandomRadix(number=1,radix=2) {
+                let color='';
+                for(let i=0;i<number;i++){
+                    color += Math.floor(Math.random()*radix).toString(radix);
+                }
+                return color;
+            },
+            // 16转10进制
+            getHetToDec: function(value) {
+                if (value === null || value === undefined) return 0;
+                const map = {
+                    a:10,
+                    b:11,
+                    c:12,
+                    d:13,
+                    e:14,
+                    f:15
+                }
+                return isNaN(parseInt(value)) ? map[value.toString().toLowerCase()] : value;
+            },
+        }
+
+        run();
+        function run() {
+            const body = document.body;
+            const fragmentDom = document.createDocumentFragment();
+            const domArr = [];
+            for(let i =0 ;i <3;i++ ){
+                const colorDom = document.createElement('div');
+                colorDom.className="box";
+                fragmentDom.appendChild(colorDom);
+                domArr.push(colorDom);
+            }
+            body.appendChild(fragmentDom);
+
+            setInterval(()=>{
+                //
+                const rColor = randomValue.getRandomHex(6);
+                domArr[0].innerHTML = `${rColor}<span>000000~ffffff<span>`;
+                domArr[0].style.backgroundColor = '#'+rColor;
+                //
+                const r256 = [];
+                for(let i=0;i<4;i++){
+                    r256.push(randomValue.getRandomRoundValue(100,120));
+                }
+                domArr[1].innerHTML = `${r256.join('.')}<span>0.0.0.0~255.255.255<span>`;
+                //
+                const weeks = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];
+                randomValue.getRandomEnum(weeks);
+                domArr[2].innerHTML = `${randomValue.getRandomEnum(weeks)}`;
+            }, 500)
+        }
+    </script>
+</body>
+</html>

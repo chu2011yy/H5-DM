@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>一个人买汽水，一块钱一瓶汽水，三个瓶盖可以换一瓶汽水，两个空瓶可以换一瓶汽水，问n块钱可以买多少汽水？</div>
+    <script>
+        //
+        // console.log(buy(3));
+        function buy(money) {
+            console.log(money,"块钱");
+            const unitPrice = 1;// 单价
+            const capChangeScale = 3/1;//  三个瓶盖可以换一瓶汽水
+            const bottleChangeScale = 2/1; // 两个空瓶可以换一瓶汽水
+            let totalBuyNumber = 0;// 汽水买数量
+            let totalRemainCap = 0;// 剩余的瓶盖数
+            let totalRemainBottle = 0;// 剩余的空瓶子数
+            moneyToBottle(money);
+            function moneyToBottle(money){
+                const buyNumber =  money/unitPrice; //钱换汽水
+                console.log(totalBuyNumber?'换':'买',buyNumber,'瓶')
+                totalRemainCap += buyNumber;
+                totalRemainBottle+=buyNumber;
+                totalBuyNumber += buyNumber;
+                console.log('有',totalRemainCap,'个瓶盖');
+                console.log('有',totalRemainBottle,'个空瓶');
+                let changeMoney = 0;
+                const {
+                    capChangeMoney,
+                    remainCap
+                } = capToMoneys(totalRemainCap);
+                const {
+                    bottleChangeMoney,
+                    remainBottle
+                } = bottleToMoneys(totalRemainBottle);
+
+                totalRemainCap = remainCap;
+                totalRemainBottle = remainBottle;
+                changeMoney = capChangeMoney + bottleChangeMoney;
+                if (changeMoney/unitPrice) {
+                    moneyToBottle(changeMoney);
+                }
+            }
+            function capToMoneys(caps) {
+                return {
+                    capChangeMoney: parseInt(caps/capChangeScale)*unitPrice,
+                    remainCap: caps%capChangeScale,
+                };
+            }
+            function bottleToMoneys(bottles) {
+                return {
+                    bottleChangeMoney: parseInt(bottles/bottleChangeScale)*unitPrice,
+                    remainBottle: bottles%bottleChangeScale,
+                };
+            }
+            return totalBuyNumber;
+        }
+        function buy1(money) {
+            let totalBuyNumber = 0;
+            sodaWater(money/1,0,0);
+            /**
+             *@number 购买数量
+             *@bottle 空瓶子
+             *@cap 盖子
+            */
+            function sodaWater(number,bottle, cap) {
+                totalBuyNumber += number;
+                const totalNullBottle = bottle%2 + number;
+                const totalNullCap = cap%3 +number;
+                const changeBottleNumber = parseInt(totalNullBottle/2);
+                const changeCapNumber = parseInt(totalNullCap/3);
+                const buyNumber = changeBottleNumber + changeCapNumber;
+                if (totalNullBottle >=2 || totalNullCap>=3) {
+                    sodaWater(buyNumber, totalNullBottle, totalNullCap);
+                }
+            }
+            console.log(money+'块钱可以买'+totalBuyNumber+'瓶');
+            return totalBuyNumber;
+        }
+        buy1(3);
+
+    </script>
+</body>
+</html>

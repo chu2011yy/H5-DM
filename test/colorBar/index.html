@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .bar {
+            width: 100%;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bar">
+    </div>
+    <script type='text/javascript'>
+        function colorBar({
+            selectorString,
+            linearColorList,
+            max,
+            min,
+            value
+        }) {
+            const bar = document.querySelector(selectorString);
+            const linearColorListStr = linearColorList.join(', ');
+            bar.style.position="relative";
+            bar.style.background = `linear-gradient(to right, ${linearColorListStr})`;
+            const cursor = document.createElement('div');
+            const cursorWidth = '28';
+            const cursorHeight = '50';
+            const cursorBackground = 'blue'
+            const dist = Math.abs(max - min);
+            const scale = (value - min)/dist;
+            const barClientWidth = bar.clientWidth;
+            const cursorX = barClientWidth * scale - cursorWidth/2;
+            const cursorStyle = `background: ${cursorBackground};position: absolute; left: ${cursorX}px; top:50%; transform: translateY(-50%);height:${cursorHeight}px;width:${cursorWidth}px;display:inline-block`
+            cursor.style.cssText = cursorStyle;
+            bar.appendChild(cursor);
+        }
+        const options = {
+            selectorString: '.bar',
+            linearColorList: ['#00A854', '#FFBF00', '#F04134'],
+            max: 1200,
+            min: 300,
+            value: 300 + 450
+        }
+        colorBar(options);
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+/*/node_modules/
+/koa/node_modules/
+.settings
+.idea
+.preject

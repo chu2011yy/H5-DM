@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+
+<body>
+    <script>
+        // window.open('http://localhost:3000/excel');
+        axios.post('http://localhost:3000/excel', {name:'sdfsdf'}, {
+            responseType: 'blob'
+        }).then((res) => {
+            console.log('res', res);
+        })
+            // const blob = res.data;
+            // const reader = new FileReader();
+            // reader.readAsDataURL(blob);
+            // reader.onload = (e) => {
+            //     const a = document.createElement('a');
+            //     a.download = Math.random();
+            //     // 后端设置的文件名称在res.headers的 "content-disposition": "form-data; name=\"attachment\"; filename=\"20181211191944.zip\"",
+            //     a.href = e.target.result;
+            //     document.body.appendChild(a);
+            //     a.click();
+            //     document.body.removeChild(a);
+            // };
+        // }).catch((err) => {
+        //     console.log(err.message);
+        // });
+    </script>
+</body>
+
+</html>

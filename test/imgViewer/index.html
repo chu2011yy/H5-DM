@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .collection {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            overflow: scroll;
+        }
+    </style>
+    <link type="text/css" rel="stylesheet" href="reset.css">
+
+</head>
+
+<body>
+    <div class="collection">
+        <img src="01.jpg" alt="" onclick="imgClick(event)" width="300" height="300">
+        <img src="02.jpg" alt="" onclick="imgClick(event)" width="300" height="300">
+        <img src="03.png" alt="" onclick="imgClick(event)" width="300" height="300">
+        <img src="04.png" alt="" onclick="imgClick(event)" width="300" height="300">
+    </div>
+    <script type="text/javascript">
+        const {
+            clientWidth: dWidth,
+            clientHeight: dHeight
+        } = document.documentElement;
+        function imgClick(event) {
+            const options = {
+                height: 0,
+                width: 0,
+                marginLeft: 0,
+                marginTop: 0,
+                scale: 1,
+                scaleY: 1,
+                scaleX: 1
+            }
+            let startTwoTouchInfo = {
+                firstX: 0,
+                firstY: 0,
+                secondX: 0,
+                secondY: 0
+            }
+            const target = event.target;
+            const viewerBox = document.createElement('div');
+            const viewerMask = document.createElement('div');
+            const viewerImage = document.createElement('img');
+            viewerBox.style.cssText = "position:absolute;top:0;right:0;bottom:0;left:0;z-index:2;overflow:hidden";
+            viewerMask.style.cssText = "position:absolute;top:0;right:0;bottom:0;left:0;z-index:1;background:rgba(0,0,0,.2)";
+            viewerImage.style.position = "absolute";
+            viewerImage.style.zIndex = "2";
+            viewerImage.style.visibility = "hidden";
+            viewerImage.src = target.src;
+            viewerImage.setAttribute('draggable', false);
+            viewerImage.onload = (data) => {
+                const {
+                    width: iWidth,
+                    height: iHeight
+                } = data.target;
+                const ratio = iWidth / iHeight;
+                options.width = (dWidth) * options.scale;
+                options.height = (options.width / ratio) * options.scale;
+                options.marginTop = (dHeight / 2 - options.height / 2) * options.scale;
+                options.marginLeft = (dWidth / 2 - options.width / 2) * options.scale;
+                const cssText = `width: ${options.width}px; height: ${options.height}px; margin-top: ${options.marginTop}px; margin-left: ${options.marginLeft}px; visibility: visible`;
+                viewerImage.style.cssText += cssText;
+                // viewerImage.style.width = options.width + 'px';
+                // viewerImage.style.height = options.height + 'px';
+                // viewerImage.style.marginTop = options.marginTop + 'px';
+                // viewerImage.style.marginLeft = options.marginLeft + 'px';
+                // viewerImage.style.visibility = "visible";
+            }
+            viewerBox.append(viewerMask);
+            viewerBox.append(viewerImage);
+            document.body.append(viewerBox);
+            const touchInImagePosition = {
+                left: 0,
+                top: 0
+            }
+            viewerImage.addEventListener('touchstart', (event) => {
+                event.stopPropagation();
+                const touches = event.touches;
+                if (touches.length === 1) {
+                    const { clientX, clientY } = touches[0];
+                    const {
+                        top,
+                        left
+                    } = event.target.getBoundingClientRect();
+                    touchInImagePosition.top = clientY - top;
+                    touchInImagePosition.left = clientX - left;
+                } else if (touches.length === 2) {
+                    const { clientX: firstX, clientY: firstY } = touches[0];
+                    const { clientX: secondX, clientY: secondY } = touches[1];
+                    startTwoTouchInfo = {
+                        firstX,
+                        firstY,
+                        secondX,
+                        secondY
+                    }
+                }
+            })
+            viewerImage.addEventListener('touchmove', (event) => {
+                event.stopPropagation();
+                const touches = event.touches;
+                if (touches.length === 1) {
+                    const { clientX, clientY } = touches[0];
+                    const marginLeft = clientX - touchInImagePosition.left;
+                    const marginTop = clientY - touchInImagePosition.top;
+                    setOptions({
+                        marginLeft,
+                        marginTop
+                    });
+                } else if (touches.length === 2) {
+                    const { clientX: firstX, clientY: firstY } = touches[0];
+                    const { clientX: secondX, clientY: secondY } = touches[1];
+                    const sP1 = {x:startTwoTouchInfo.firstX, y:startTwoTouchInfo.firstY};
+                    const sP2 = {x:startTwoTouchInfo.secondX, y:startTwoTouchInfo.secondY};
+                    const mP1 = {x:firstX, y:firstY};
+                    const mP2 = {x:secondX, y:secondY};
+                    const scale = getDistance(mP1, mP2)/getDistance(sP1, sP2); //得到缩放比例
+                    setImageScale(scale);
+                }
+            })
+            viewerMask.addEventListener('click', () => {
+                viewerBox.style.display = 'none';
+            })
+            function setOptions({ marginLeft, marginTop }) {
+                if (marginTop != undefined) {
+                    options.marginTop = marginTop * options.scale;
+                    viewerImage.style.marginTop = options.marginTop + 'px';
+                }
+                if (marginLeft != undefined) {
+                    options.marginLeft = marginLeft * options.scale;
+                    viewerImage.style.marginLeft = options.marginLeft + 'px';
+                }
+            }
+            function setImageScale(scale) {
+                options.scale = scale;
+                // alert(scale, scale);
+                // options.scaleX = scale;
+                // options.scaleY = scale;
+                // viewerImage.style.transform = `scale(${scale})`;
+                options.width *= scale;
+                options.height *= scale;
+                viewerImage.style.width = options.width + 'px;';
+                viewerImage.style.height = options.height + 'px;';
+            }
+            /*
+            * 两点的距离
+            */
+            function getDistance(p1, p2) {
+                var x = p2.x - p1.x,
+                    y = p2.y - p1.y;
+                return Math.sqrt((x * x) + (y * y));
+            };
+
+        }
+    </script>
+</body>
+
+</html>

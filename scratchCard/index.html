@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+            width: 100%;
+            overflow: auto;
+        }
+        .canvas {
+            background-color: transparent;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .canvas .text{
+            font-size: 20px;
+            /* position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); */
+        }
+    </style>
+</head>
+<body>
+    <canvas class="canvas">
+        <!-- <div class="text">恭喜中奖啦！</div> -->
+    </canvas>
+    <script>
+        const canvasHeight = 240;
+        const canvasWidth = 300;
+        const pathSize = 40;
+        const canvas = document.getElementsByClassName('canvas')[0];
+        let isKeyDown = false;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = "#ccc";
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+        ctx.globalCompositeOperation ="destination-out";
+        canvas.addEventListener('touchmove',(event)=>{
+            const {
+                clientX,
+                clientY,
+            } = event.touches[0];
+            const {
+                offsetLeft,
+                offsetTop
+            } = event.target;
+            const x = clientX - offsetLeft;
+            const y = clientY - offsetTop;
+            scratch(ctx, x, y);
+        })
+        canvas.addEventListener('mousedown',(event)=>{
+            isKeyDown = true;
+        })
+        canvas.addEventListener('mousemove',(event)=>{
+            if (!isKeyDown) return;
+            const {
+                offsetX,
+                offsetY
+            } = event;
+            scratch(ctx, offsetX, offsetY);
+        })
+        canvas.addEventListener('mouseup',(event)=>{
+            isKeyDown = false;
+        })
+        function scratch(ctx, x, y) {
+            ctx.beginPath();
+            ctx.arc(x,y,pathSize/2,0,2*Math.PI);
+            ctx.closePath();
+            ctx.fill();
+        }
+    </script>
+</body>
+</html>

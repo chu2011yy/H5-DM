@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .div{
+            margin-top: 100px;
+            margin-left: 100px;
+            height: 60px;
+            width: 60px;
+            background-color: palegreen;
+            transform: scale(100%);
+        }
+    </style>
+</head>
+<body>
+    <input type="range" max="300" min="0" onchange="change(event.target.value, 'scale')">
+    <input type="range" max="100" min="-100" onchange="change(event.target.value, 'x')">
+    <input type="range" max="100" min="-100" onchange="change(event.target.value, 'y')">
+    <div class="transform">transform:</div>
+    <div class="transformOrigin">transformOrigin:</div>
+    <div class="div"></div>
+    <script>
+        function change(val, type) {
+            const div = document.getElementsByClassName('div')[0];
+            const transformDiv = document.getElementsByClassName('transform')[0];
+            const transformOriginDiv = document.getElementsByClassName('transformOrigin')[0];
+            if (type === 'scale') {
+                div.style.transform = 'scale(' +val/100+  ')';
+            } else if (type === 'x') {
+                window.x = val;
+                div.style.transformOrigin = window.x +'% '+  (window.y || 0)+'%';
+            } else if (type === 'y') {
+                window.y = val;
+                div.style.transformOrigin = (window.x || 0) +'% '+  window.y+'%';
+            }
+            transformDiv.innerHTML = 'transformDiv:'+ div.style.transform;
+            transformOriginDiv.innerHTML = 'transformOrigin:'+ div.style.transformOrigin;
+            console.log(val);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .test {
+            font-size: 22px;
+        }
+        .color-bar {
+            height: 100px;
+            width: 100%;
+            background: linear-gradient(to right, #00A854, #FFBF00, #F04134);
+        }
+        input{
+            width: 100%;
+            height: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test">test</div>
+    <div class="color-bar"></div>
+    <input type="range" max="100" min="0" onchange="change(event)"/>
+    <script type="text/javascript">
+        function change(event) {
+            const scale = event.target.value / 100;
+            const test = document.getElementsByClassName('test')[0];
+            test.style.color = '#'+myLinearGradientColor(scale);
+        }
+        // value 0到1的小数
+        function myLinearGradientColor(value) {
+            const colorList = ['00A854', 'FFBF00', 'F04134'];
+            var color = '000000';
+            if (value >= 0 && value < 0.5) {
+                // 0-0.5
+                const scale = value * 2;
+                color = getLinearGradientColor(colorList[0], colorList[1], scale);
+            } else if (value >= 0.5 && value <= 1) {
+                // 0.5-1
+                const scale = (value - 0.5) * 2
+                color = getLinearGradientColor(colorList[1], colorList[2], scale);
+            }
+            return color;
+        }
+        // value 0到1的小数
+        function getLinearGradientColor(startColor, entColor, scale) {
+            const startColorInfo = getRgbColorInfo(startColor);
+            const endColorInfo = getRgbColorInfo(entColor);
+            var red = getDecColor(startColorInfo.red, endColorInfo.red, scale);
+            var green = getDecColor(startColorInfo.green, endColorInfo.green, scale);
+            var blue = getDecColor(startColorInfo.blue, endColorInfo.blue, scale);
+            red = DecTohex(Math.round(red));
+            green = DecTohex(Math.round(green));
+            blue = DecTohex(Math.round(blue));
+            return '' + red + green + blue;
+        }
+        function getDecColor(startColor, entColor, scale) {
+            const startDecColor =  hexToDec(startColor);
+            const endDecColor =  hexToDec(entColor);
+            return startDecColor + (endDecColor - startDecColor) * scale;
+        }
+        function getRgbColorInfo(color) {
+            const [scA, scB, scC, scD, scE, scF] = String(color);
+            return {
+                red: '' + scA + scB,
+                green: '' + scC + scD,
+                blue: '' + scE + scF,
+            }
+        }
+        // 16进制转10进制 00-FF
+        function hexToDec(value) {
+            const [oneEle, twoEle] = String(value);
+            const one = charCodeToDec(oneEle);
+            const two = charCodeToDec(twoEle);
+            return one * 16 + +two;
+        }
+        // 16进制charCode转10进制
+        function charCodeToDec(val) {
+            if (val <= 9) return val;
+            const upValue = String(val).toUpperCase();
+            // A 的charCode 是 65； 65 - 55 = 10
+            return upValue.charCodeAt(0) - 55;
+        }
+        // 10进制转16进制 0-256
+        function DecTohex(value) {
+            const firstValue = value % 16;
+            const secondValue = Math.floor(value / 16);
+            const arr = ['A','B', 'C', 'D', 'E', 'F'];
+            const firstV = firstValue < 10 ?  firstValue: arr[firstValue - 10];
+            const secondV = secondValue < 10 ?  secondValue: arr[secondValue - 10];
+            return '' + secondV + firstV;
+        }
+        const colorValue = myLinearGradientColor(0.25);
+        console.log(colorValue);
+        document.querySelector('.test').style.color = "#"+colorValue;
+        // console.log(myLinearGradientColor(0.99));
+    </script>
+</body>
+
+</html>

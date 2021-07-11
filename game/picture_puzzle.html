@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no"> -->
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            user-select: none;
+        }
+
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        div {
+            float: left;
+            position: relative;
+            box-shadow: inset 0px 0px 2px #999;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        (function () {
+            window.draw = draw;
+            var DIRECTION_UP = 'up';
+            var DIRECTION_BOTTOM = 'bottom';
+            var DIRECTION_LEFT = 'left';
+            var DIRECTION_RIGHT = 'right';
+            var offsetLeftReg = /.+translate\((.+)px,.+px\);(.+)*$/g;
+            var offsetTopReg = /.+translate\(.+px,(.+)px\);(.+)*$/g;
+            var bgPositionReg = /.+background-position:(.+)px .+px.+/g;
+            var bgPositionReg = /.+background-position:.+px (.+)px.+/g;
+            var transformTime = 300;
+            var positionInfoList = [];
+            var doc = document;
+            var sw = screen.availWidth;
+            var sh = screen.availHeight;
+            var whiteIndexRow;
+            var whiteIndexColumn;
+            var itemHeight;
+            var itemWidth;
+            var rows;
+            var columns;
+            /*
+            * 更新translate
+            **/
+            function changeTranslate(cssText, left, top) {
+                var result = ''
+                if (/translate/g.test(cssText)) {
+                    result = cssText.replace(/(.+transform: *translate\()(.+)(px,)(.+)(px\);)(.+)*/g, function (a, $1, $2, $3, $4, $5, $6) {
+                        var res = `${$1}${left}${$3}${top}${$5}${$6}`;
+                        return res;
+                    })
+                } else {
+                    result = `${cssText}transform:translate(${left}px, ${top}px);`
+                }
+                return result
+            }
+            function doMove(direction) {
+                var whiteInfo;
+                var moveInfo;
+                var moveRow;
+                var moveColumn;
+                if (direction === DIRECTION_UP) {
+                    moveRow = whiteIndexRow + 1;
+                    moveColumn = whiteIndexColumn;
+                } else if (direction === DIRECTION_BOTTOM) {
+                    moveRow = whiteIndexRow - 1;
+                    moveColumn = whiteIndexColumn;
+                } else if (direction === DIRECTION_LEFT) {
+                    moveRow = whiteIndexRow;
+                    moveColumn = whiteIndexColumn + 1;
+                } else if (direction === DIRECTION_RIGHT) {
+                    moveRow = whiteIndexRow;
+                    moveColumn = whiteIndexColumn - 1;
+                }
+                if (whiteIndexRow === -1 || moveRow === -1) return; // 边界
+                if (!positionInfoList[whiteIndexRow] || !positionInfoList[moveRow]) return; // 边界
+
+                whiteInfo = positionInfoList[whiteIndexRow][whiteIndexColumn];
+                moveInfo = positionInfoList[moveRow][moveColumn];
+                if (!moveInfo || !moveInfo) return; // 边界
+
+                var moveDom = moveInfo.dom;
+                var whiteDom = whiteInfo.dom;
+                var moveCss = moveDom.style.cssText;
+                var whiteCss = whiteDom.style.cssText;
+                var movTop = +moveCss.replace(offsetTopReg, '$1') || 0;
+                var whiteTop = +whiteCss.replace(offsetTopReg, '$1') || 0;
+                var movLeft = +moveCss.replace(offsetLeftReg, '$1') || 0;
+                var whiteLeft = +whiteCss.replace(offsetLeftReg, '$1') || 0;
+                if (direction === DIRECTION_UP) {
+                    movTop -= itemHeight;
+                    whiteTop += itemHeight;
+                } else if (direction === DIRECTION_BOTTOM) {
+                    movTop += itemHeight;
+                    whiteTop -= itemHeight;
+                } else if (direction === DIRECTION_LEFT) {
+                    movLeft -= itemWidth;
+                    whiteLeft += itemWidth;
+                } else if (direction === DIRECTION_RIGHT) {
+                    movLeft += itemWidth;
+                    whiteLeft -= itemWidth;
+                }
+                var currentMoveCss = moveDom.style.cssText;
+                var changeMoveCss = changeTranslate(currentMoveCss, movLeft, movTop);
+                var currentWhiteCss = whiteDom.style.cssText;
+                var changeWhiteCss = changeTranslate(currentWhiteCss, whiteLeft, whiteTop);
+                moveDom.style.cssText = changeMoveCss;
+                whiteDom.style.cssText = changeWhiteCss;
+
+                var temp = positionInfoList[whiteIndexRow][whiteIndexColumn];
+                positionInfoList[whiteIndexRow][whiteIndexColumn] = positionInfoList[moveRow][moveColumn];
+                positionInfoList[moveRow][moveColumn] = temp;
+                whiteIndexRow = moveRow;
+                whiteIndexColumn = moveColumn;
+                setTimeout(() => {
+                    passGame()
+                }, transformTime)
+            }
+            function passGame() {
+                var isPass = true;
+                positionInfoList.forEach((itemList, rowsIndex) => {
+                    itemList.forEach((item, columnsIndex) => {
+                        if (!item.isWhite) {
+                            var cssText = item.dom.style.cssText;
+                            var cssBgPositionX = +cssText.replace(bgPositionReg, '$1') || 0;
+                            var cssBgPositionY = +cssText.replace(bgPositionReg, '$1') || 0;
+                            if (item.positionX !== cssBgPositionX || item.positionY !== cssBgPositionY) {
+                                isPass = false;
+                            }
+                        }
+                    })
+                })
+                if (isPass) {
+                    alert('老婆我爱你，么么哒！！！')
+                }
+                return isPass;
+            }
+            function checkCanMove(dom, direction) {
+                var isCanMove = false;
+                let rowsIndex = 0;
+                let columnsIndex = 0;
+                positionInfoList.forEach((itemList, rIndex) => {
+                    itemList.forEach((item, cIndex) => {
+                        if (item.dom === dom) {
+                            rowsIndex = rIndex,
+                                columnsIndex = cIndex
+                        }
+                    })
+                })
+                if (direction === DIRECTION_UP) {
+                    isCanMove = rowsIndex >= 1 && positionInfoList[rowsIndex - 1][columnsIndex].isWhite;
+                } else if (direction === DIRECTION_BOTTOM) {
+                    isCanMove = (rowsIndex + 1 < positionInfoList.length) && positionInfoList[rowsIndex + 1][columnsIndex].isWhite;
+                } else if (direction === DIRECTION_LEFT) {
+                    isCanMove = columnsIndex >= 1 && positionInfoList[rowsIndex][columnsIndex - 1].isWhite;
+                } else if (direction === DIRECTION_RIGHT) {
+                    isCanMove = (columnsIndex + 1 < positionInfoList[rowsIndex].length) && positionInfoList[rowsIndex][columnsIndex + 1].isWhite;
+                }
+                return isCanMove;
+            }
+            function draw(src, row = 3, column = 3) {
+                rows = rows;
+                columns = columns;
+                whiteIndexRow = parseInt(Math.random() * rows);
+                whiteIndexColumn = parseInt(Math.random() * columns);
+                var image = new Image();
+                image.src = src;
+                image.onload = function () {
+                    init()
+                }
+            }
+            function init() {
+                var {
+                    height,
+                    width
+                } = image;
+                var scale = width / height;
+                itemHeight = sw / scale / rows;
+                itemWidth = sw / columns;
+                var isWhite = false;
+                var board = doc.createElement('div');
+                var psList = [];
+                board.style.cssText = `font-size:0`;
+                for (var r = 0; r < rows; r++) {
+                    var positionY = -itemHeight * r;
+                    var list = [];
+                    for (var c = 0; c < columns; c++) {
+                        var positionX = -itemWidth * c;
+                        var tempImage = doc.createElement('div');
+                        if (whiteIndexColumn === c && whiteIndexRow === r) {
+                            isWhite = true;
+                        } else {
+                            isWhite = false;
+                        }
+                        psList.push({
+                            positionX,
+                            positionY,
+                            row: r,
+                            column: c,
+                        });
+                        list.push({
+                            indexColumns: c,
+                            indexRows: r,
+                            positionY: 0,
+                            positionX: 0,
+                            isWhite,
+                            dom: null
+                        })
+                    }
+                    positionInfoList.push(list);
+                }
+                var randomPsList = randomConfuse(psList);
+                positionInfoList.forEach((itemList, destRowsIndex) => {
+                    itemList.forEach((item, destColumnsIndex) => {
+                        var tempImage = doc.createElement('div');
+                        var rIndex = destRowsIndex * columns + destColumnsIndex;
+                        var {
+                            positionX,
+                            positionY,
+                            row: sourceRow,
+                            column: sourceColumn
+                        } = randomPsList[rIndex];
+                        if (item.isWhite) {
+                            tempImage.style.cssText = `box-shadow:none;height:${itemHeight}px;width:${itemWidth}px;background-size:auto;background-repeat:no-repeat;background-position:${positionX}px ${positionY}px;`;
+                        } else {
+                            tempImage.style.cssText = `transition:transform ${transformTime}ms;height:${itemHeight}px;width:${itemWidth}px; background-image:url(${src});background-size:${100 * scale * columns}% ${100 * scale * rows}%;background-position:${positionX * scale}px ${positionY * scale}px;background-repeat:no-repeat`;
+                        }
+                        item.dom = tempImage;
+                        item.positionX = positionX;
+                        item.positionY = positionY;
+                        board.appendChild(tempImage);
+                        bindEvent(tempImage);
+                    })
+                })
+                window.addEventListener('keydown', (event) => {
+                    var keyCode = event.keyCode;
+                    if (keyCode >= 37 && keyCode <= 40) {
+                        var map = {
+                            37: DIRECTION_LEFT,
+                            38: DIRECTION_UP,
+                            39: DIRECTION_RIGHT,
+                            40: DIRECTION_BOTTOM
+                        }
+                        var direction = map[keyCode];
+                        console.log(direction);
+                        doMove(direction)
+                    }
+                })
+                doc.body.appendChild(board);
+                function bindEvent(dom) {
+                    var startX = 0;
+                    var startY = 0;
+                    var isMouseDown = false;
+                    dom.addEventListener('mousedown', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation()
+                        var {
+                            pageX,
+                            pageY
+                        } = event;
+                        startX = pageX;
+                        startY = pageY;
+                        isMouseDown = true;
+                    })
+                    dom.addEventListener('mousemove', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation()
+                        if (!isMouseDown) return;
+                        isMouseDown = false;
+                        var {
+                            pageX,
+                            pageY
+                        } = event;
+                        var directionX = pageX - startX;
+                        var directionY = pageY - startY;
+                        var direction = '';
+                        if (Math.abs(directionX) > Math.abs(directionY)) {
+                            // 水平
+                            direction = directionX > 0 ? DIRECTION_RIGHT : DIRECTION_LEFT;
+                        } else {
+                            // 垂直
+                            direction = directionY > 0 ? DIRECTION_BOTTOM : DIRECTION_UP;
+                        }
+                        console.log(direction)
+                        checkCanMove(event.target, direction) && doMove(direction)
+                    })
+                    dom.addEventListener('touchstart', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation()
+                        var {
+                            clientX,
+                            clientY
+                        } = event.touches[0];
+                        startX = clientX;
+                        startY = clientY;
+                        isMouseDown = true;
+                    })
+                    dom.addEventListener('touchmove', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation()
+                        if (!isMouseDown) return;
+                        isMouseDown = false;
+                        var {
+                            clientX,
+                            clientY
+                        } = event.touches[0];
+                        var directionX = clientX - startX;
+                        var directionY = clientY - startY;
+                        var direction = '';
+                        if (Math.abs(directionX) > Math.abs(directionY)) {
+                            // 水平
+                            direction = directionX > 0 ? DIRECTION_RIGHT : DIRECTION_LEFT;
+                        } else {
+                            // 垂直
+                            direction = directionY > 0 ? DIRECTION_BOTTOM : DIRECTION_UP;
+                        }
+                        console.log(direction)
+                        var dom = event.target;
+                        checkCanMove(dom, direction) && doMove(direction)
+                    })
+
+                }
+            }
+        }())
+    </script>
+    <script>
+        alert('通过有惊喜！')
+        function randomNumber(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+        function randomConfuse(arr) {
+            var resArr = [];
+            var oldArr = JSON.parse(JSON.stringify(arr));
+            while (oldArr.length !== 0) {
+                resArr.push(oldArr.splice(randomNumber(0, oldArr.length - 1), 1)[0]);
+            }
+            return resArr;
+        }
+        var rows = randomNumber(3, 4);
+        var columns = randomNumber(3, 5);
+        new draw('1.jpg', rows, columns);
+    </script>
+</body>
+
+</html>

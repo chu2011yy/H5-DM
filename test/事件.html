@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .list-box{
+            padding: 30px;
+            background-color: greenyellow;
+        }
+        .list{
+            padding: 30px;
+            background-color: rebeccapurple;
+        }
+        .item {
+            line-height: 50px;
+            background-color: gray;
+            margin-bottom: 10px;
+        }
+        button{
+            border: 2px solid #4455ff;
+            border-radius: 6px;
+            width: 100px;
+            line-height: 50px;
+            margin: 30px;
+            font-size: 26px;
+        }
+        button:active {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="list-box">
+        <ul class="list">
+            <li class="item">1</li>
+            <li class="item">2</li>
+            <li class="item">3</li>
+            <li class="item">4</li>
+            <li class="item">5</li>
+        </ul>
+        <div class="text"></div>
+    </div>
+    <div>
+        <button onclick="bubbling(event)">冒泡</button>
+        <button onclick="capture(event)">捕捉</button>
+        <button onclick="testFunciotn(event)">测试</button>
+        <button onclick="removeAllEvent(event)">重置</button>
+    </div>
+    <script type="text/javascript">
+        const listBox = document.getElementsByClassName('list-box')[0];
+        const list = document.getElementsByClassName('list')[0];
+        const itemArray = Array.from(document.getElementsByClassName('item'));
+        const textBox = document.querySelector('.text');
+        // 冒泡 默认
+        function bubbling() {
+            removeAllEvent()
+            listBox.addEventListener('click', listBoxEventFunction, false);
+            list.addEventListener('click', listEventFunction, false);
+            itemArray.forEach(element => {
+                element.addEventListener('click', itemEventFunction, false);
+            });
+        }
+        // 捕捉
+        function capture() {
+            removeAllEvent()
+            listBox.addEventListener('click', listBoxEventFunction, true);
+            list.addEventListener('click', listEventFunction, true);
+            itemArray.forEach(element => {
+                element.addEventListener('click', itemEventFunction, true);
+            });
+        }
+        // 测试
+        function testFunciotn() {
+            removeAllEvent()
+            listBox.addEventListener('click', listBoxEventFunction, false); // box
+            list.addEventListener('click', listEventFunction, true); // ul
+            itemArray.forEach(element => {
+                element.addEventListener('click', itemEventFunction, false); // li
+            });
+        }
+        // function testFunciotn() {
+        //     removeAllEvent()
+        //     listBox.addEventListener('click', ()=>{
+        //         alert('冒泡')
+        //     }, false); // box
+        //     listBox.addEventListener('click', ()=>{
+        //         alert('捕捉')
+        //     }, true); // box
+        // }
+
+        // 非核代码
+        function listBoxEventFunction(event) {
+            console.log('box青色>>>click');
+            if (event.target === event.currentTarget) {
+                textBox.innerText = '=>box青色';
+            } else {
+                textBox.innerText += '=>box青色';
+            }
+        }
+        function listEventFunction(event) {
+            event.stopPropagation();
+            console.log('ul紫色>>>click');
+            textBox.innerText += '=>ul紫色';
+        }
+        function itemEventFunction(event) {
+            // event.stopPropagation();
+            console.log('li灰色>>>click');
+            textBox.innerText += '=>li灰色';
+        }
+        function removeAllEvent() {
+            textBox.innerText = '';
+            listBox.removeEventListener('click', listBoxEventFunction, true);
+            listBox.removeEventListener('click', listBoxEventFunction, false);
+            list.removeEventListener('click', listEventFunction, true);
+            list.removeEventListener('click', listEventFunction, false);
+            itemArray.forEach(element => {
+                element.removeEventListener('click', itemEventFunction, true);
+                element.removeEventListener('click', itemEventFunction, false);
+            });
+        }
+    </script>
+</body>
+</html>

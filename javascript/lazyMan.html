@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function LazyMan(value){
+            const name = value;
+            console.log('Hi! This is '+name);
+            const result = function(){
+
+            };
+            result.sleep = function(time) {
+                const obj = {
+                    eat:function(something){
+                        setTimeout(()=>{
+                            console.log('Wake up after'+ time);
+                            result.eat(something);
+                        },time*1000)
+                    }
+                };
+                return obj;
+            }
+            result.eat = function(something) {
+                console.log('Eat' + something)
+            }
+            return result
+        }
+        LazyMan('Hank!').sleep(5).eat('supper');
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>姓名：<span onclick="copyContent(this);" title="点击复制">张 三</span></td>
+        </tr>
+        <tr>
+            <td>姓名：<span onclick="copyContent(this);" title="点击复制">李 四</span></td>
+        </tr>
+    </table>
+
+    <input id="copy_content" type="text" value="" style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;" />
+
+    <script type="text/javascript">
+        function copyContent(ElementObj) {
+            const str = ElementObj.innerText;
+            const input = document.createElement("input");
+            input.readOnly = 'readonly';
+            input.value = str;
+            document.body.appendChild(input);
+            input.select();
+            input.setSelectionRange(0, input.value.length);
+            document.execCommand('Copy');
+            document.body.removeChild(input);
+            alert('已复制');
+        }
+    </script>
+</body>
+
+</html>

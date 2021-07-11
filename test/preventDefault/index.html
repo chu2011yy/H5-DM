@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p><a class="normal" href="https://www.baidu.com">normal preventDefault www.baidu.com</a></p>
+    <p><a class="passive" href="https://www.baidu.com">passive preventDefault www.baidu.com </a></p>
+    <input type="text">
+    <script type='text/javascript'>
+        document.querySelector('.passive').addEventListener('click', function(e) {
+            e.preventDefault(); //
+        }, { passive: true });
+        document.querySelector('.normal').addEventListener('click', function(e) {
+            e.preventDefault(); // form 表单提交也是 事件默认动作
+        }, { passive: false });
+        document.querySelector('input').addEventListener('click',function(e) {
+            e.preventDefault();
+            // alert('asdf');
+        });
+    </script>
+</body>
+</html>

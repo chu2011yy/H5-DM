@@ -26,7 +26,7 @@
         const ul = document.createElement('ul');
         scrollBox.className = 'scroll-box';
         const showList = ['html','css','javascript','vue','react','weapp','angular','node.js','jquery'];
-        for(const item of [...showList,...showList]) {
+        for(const item of [...showList,...showList,...showList,...showList,...showList]) {
             const li = document.createElement('li');
             li.innerText = item;
             ul.appendChild(li);
@@ -69,18 +69,20 @@
         function touchend(event) {
             const touch = event.changedTouches[0];
             const yEnd = touch.screenY;
-            translateY_s = translateY_d;
+            // translateY_s = translateY_d;
             const ulHeight = window.getComputedStyle(ul,null).getPropertyValue("height").replace('px','');
             const boxHeight = window.getComputedStyle(scrollBox,null).getPropertyValue("height").replace('px','');
             const scrollHeight = ulHeight - boxHeight;
-            if(translateY_s > 0) {
+            if(translateY_d > 0) {
                 endUp();
-            } else if (translateY_s < -scrollHeight){
+            } else if (translateY_d < -scrollHeight){
                 endBottom(scrollHeight);
             } else {
-                const lastOne = moveList[moveList.length - 1];
-                const lastTwo = moveList[moveList.length - 2];
-                const lastThree = moveList[moveList.length - 3];
+                const listLen = moveList.length;
+                if (listLen<3) return;
+                const lastOne = moveList[listLen - 1];
+                const lastTwo = moveList[listLen - 2];
+                const lastThree = moveList[listLen - 3];
                 const {
                     time: lastOneTime,
                     y: lastOneY
@@ -93,46 +95,50 @@
                     time: lastThreeTime,
                     y: lastThreeY
                 } = lastThree;
-
                 const v0 = Math.abs((lastThreeY - lastTwoY) / (lastThreeTime - lastTwoTime));
                 const v1 = Math.abs((lastTwoY - lastOneY) / (lastTwoTime - lastOneTime));
                 const t = Math.abs(lastTwoTime - lastOneTime);
                 const a = Math.abs(v1 - v0)*t;
+                const direction = lastOneY > lastTwoY ? 'up': 'down'; //内容滑动方向
+                console.log(direction);
                 // console.log('v1',v1);
                 // console.log('v0',v0);
                 // console.log('a',a);
-                let duration = 20;
-                let ty = translateY_s;
+                let duration = 2;
+                let ty = translateY_d;
                 let interval = setInterval(()=>{
-                    const d = Math.abs(translateY_s) - parseInt(1/2*a*duration*duration);
-                    console.log('translateY_s',translateY_s)
+                    const at = parseInt(Math.abs(v1 * duration));
+                    const halfatt = 1/2*a*duration*duration;
+                    let d = parseInt(duration < 8 ? at + halfatt: at - halfatt);
+                    console.log('频率路程',d)
+                    console.log('duration',duration);
                     duration++;
-                    ty = ty > 0 ? ty + d: ty - d;
+                    // d*=2;
+                    ty = direction === 'up' ? ty + d: ty - d;
+                    translateY_s = ty;
+                    ul.style.cssText = `transition: transform ${duration}ms;transform:translateY(${translateY_s}px)`;
                     if(d <= 0) {
                         clearInterval(interval);
                         interval = null;
-                        translateY_s = ty;
                         return;
                     } else if (ty > 0) {
                         endUp();
                         clearInterval(interval);
                         interval = null;
-                        translateY_s = ty;
                         return;
                     } else if (ty < - scrollHeight) {
                         endBottom(scrollHeight);
                         clearInterval(interval);
                         interval = null;
-                        translateY_s = ty;
                         return;
                     }
-                    ul.style.cssText = `transition: transform 0.02s;transform:translateY(${ty}px)`;
-                },20)
+                },duration)
             }
         }
 
         function endUp() {
-            ul.style.cssText = `transition: transform 0.2s ease-in-out;transform:translateY(${0}px)`;
+            translateY_s = 0;
+            ul.style.cssText = `transition: transform 0.2s ease-in-out;transform:translateY(${translateY_s}px)`;
         }
         function endBottom(scrollHeight) {
             translateY_s = -scrollHeight;

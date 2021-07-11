@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .test{
+            height: 1000px;
+            width: 100px;
+            background: greenyellow;
+            padding: 20px;
+            border: 20px solid blanchedalmond;
+            margin:20px;
+        }
+        button:active {
+            background: paleturquoise;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="test"></div>
+        <input/>
+    </div>
+    <button onclick="clickHanlder('border-box')">border-box</button>
+    <button onclick="clickHanlder('content-box')">content-box</button>
+    <button onclick="clickHanlder('inherit')">inherit</button>
+    <script typy="text/javascript">
+        function clickHanlder(value) {
+            const testBox = document.querySelector('.test');
+            testBox.style.boxSizing = value;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class MyPromise {
+            constructor(callback) {
+                this.res = null;
+                this.thenCallback = null;
+                // this.resolve = resolveFn;
+                // this.reject = rejectFn;
+                callback(this.resolve,this.reject);
+                return this;
+            }
+            then(callback) {
+                this.thenCallback = callback;
+            }
+            resolve(data) {
+                this.thenCallback(data)
+            }
+            reject(data) {
+                this.thenCallback(data)
+            }
+        }
+        // function test() {
+        //     const promise = new MyPromise((resolve,reject)=>{
+        //         resolve('哈哈')
+        //     })
+        //     debugger
+        //     return promise;
+        // }
+        // test().then((data)=>{
+        //     console.log(data);
+        // })
+        const promise = new MyPromise((resolve,reject)=>{
+            resolve('哈哈')
+        })
+        promise.then((data)=>{
+            debugger
+        }).catch((data)=>{
+            debugger
+        }).finally((data)=>{
+            debugger
+        });
+        // const promise = new Promise((resolve,reject)=>{
+        //     reject('哈哈')
+        // })
+        // promise.then((data)=>{
+        //     debugger
+        // }).catch((data)=>{
+        //     debugger
+        // }).finally((data)=>{
+        //     debugger
+        // });
+    </script>
+</body>
+</html>

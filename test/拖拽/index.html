@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+      div{
+          width: 50px;
+          height: 50px;
+          background-color: yellow;
+          position: absolute;
+          cursor: move;
+      }
+
+    </style>
+</head>
+<body>
+<div></div>
+
+<script>
+    window.onload = function () {
+        //获取需要拖拽的div
+        var div1 = document.getElementsByTagName("div")[0];
+        //添加鼠标按下事件
+        div1.onmousedown = function (evt) {
+            var oEvent = evt || event;
+      
+            //添加doc滑动时间
+            document.onmousemove = function (evt) {
+                var oEvent = evt || event;
+                //重新计算div的left top值
+                var left = oEvent.clientX
+                var top = oEvent.clientY 
+                //left  当小于等于零时，设置为零 防止div拖出document之外
+                if (left <= 0) {
+                    left = 0;
+                }
+                //当left 超过文档右边界  设置为右边界
+                else if (left >= document.documentElement.clientWidth - div1.offsetWidth) {
+                    left = document.documentElement.clientWidth - div1.offsetWidth;
+                }
+                if (top <= 0) {
+                    top = 0;
+                }
+                else if (top >= document.documentElement.clientHeight - div1.offsetHeight) {
+                    top = document.documentElement.clientHeight - div1.offsetHeight;
+                }
+                //重新给div赋值
+                div1.style.top = top + "px";
+                div1.style.left = left + "px";
+            }
+            //添加鼠标抬起事件
+            div1.onmouseup = function () {
+                //清空事件
+                document.onmousemove = null;
+                div1.onmouseup = null;
+            }
+        }
+    }
+
+
+</script>
+</body>
+</html>
