@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .box{
+            border: 1px solid deeppink;
+        }
+        div.flex{
+            display: flex;
+            flex-flow: nowrap row;
+            overflow: auto;
+        }
+        span{
+            background-color: aquamarine;
+            border:3px dotted darkviolet;
+            flex: 1 0 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="flex">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span >4
+                <div style="height:300px"></div></span>
+            </span>
+            <span>5</span>
+            <span>6</span>
+        </div>
+    </div>
+</body>
+</html>

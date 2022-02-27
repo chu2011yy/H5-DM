@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div onclick="openChild()">打开</div>
+    <div onclick="sendChild()">发送</div>
+    <script>
+        let child;
+        function openChild() {
+            child = window.open('./child.html');
+        }
+        function sendChild() {
+            child.postMessage('sdfasdf', '*')
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <title>模拟cmd seajs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js">
+    </script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/2.1.2/vue-router.js"></script>
+    <script src="require.js"></script>
+</head>
+
+<body>
+    <div id="intro" style="text-align:center;">
+    </div>
+    <script type="text/javascript">
+        xrequireConfig({
+            login: './login.js',
+            register: './register.js'
+        })
+        xrequire(['login', 'register'], (Login, Register) => {
+            mainVue(Login, Register)
+        })
+
+        function mainVue(Login, Register) {
+            // 定义路由并注册路由规则
+            var vueRouter = new VueRouter({
+                base:'/page',
+                routes: [{
+                        path: '/',
+                        redirect: '/login'
+                    },
+                    {
+                        path: '/login',
+                        name:'login',
+                        component: Login
+                    },
+                    {
+                        path: '/register/:ddd/:id',
+                        name:'register',
+                        component: Register
+                    },
+                ]
+            })
+            var vue_det = new Vue({
+                template: `<div>
+        <button @click="changeRouter('login')">login</button>
+        <button @click="changeRouter('register')">register</button>
+        <router-view></router-view></div>`,
+                el: '#intro',
+                router: vueRouter,
+                data: {
+                    showApp: true
+                },
+                components: {
+                    // Login,
+                    // Register
+                },
+                methods: {
+                    changeRouter(name) {
+                        this.$router.push({
+                            name,
+                            params: {
+                                id:'sdfsdf',
+                                ddd: 'ssss',
+                            }
+                        })
+                    }
+                },
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>模拟cmd seajs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js">
+    </script>
+    <script src="./require.js"></script>
+</head>
+
+<body>
+    <div id="intro" style="text-align:center;">
+        <h1>{{ message }}</h1>
+        <button @click="changeApp">隐藏组件</button>
+        <App v-if="showApp" />
+    </div>
+    <script type="text/javascript">
+        require('./app.js','app', (app) => {
+            var vue_det = new Vue({
+                el: '#intro',
+                data: {
+                    message: '我的第一个VueJS任务',
+                    showApp: true
+                },
+                components: {
+                    App: app
+                },
+                methods: {
+                    changeApp() {
+                        this.showApp = !this.showApp;
+                    }
+                },
+            });
+        })
+    </script>
+</body>
+
+</html>
